@@ -42,43 +42,56 @@ def thankyou():
 @app.route("/api/attractions")
 def api_attractions():
     page = request.args.get("page", default=0, type=int)
-    keyword = request.args.get("keyword", default="")
-    mycursor.execute(
-        f"SELECT COUNT(*) FROM attractions WHERE name LIKE '%{keyword}%'")
+    keyword = request.args.get("keyword", default="", type=str)
+    mycursor.execute("SELECT COUNT(*) FROM attractions WHERE name LIKE %s", (f'%{keyword}%',))
     (total,) = mycursor.fetchone()
-    for i in range(0, total, 12):
-        if page == i/12:
-            mycursor.execute(f"SELECT id, name, category, description, address, transport, mrt, latitude, longitude FROM attractions WHERE name LIKE '%{keyword}%' LIMIT {i}, 12")
-            db_data = mycursor.fetchall()
-            page_data = {
-                "nextPage": page+1 if page < (total//12) else None,
-                "data": []
-            }
-            for i in range(len(db_data)):
-                (id, name, category, description, address, transport, mrt, latitude, longitude) = db_data[i]
-                mycursor.execute(f"SELECT img_url FROM photos WHERE attraction_id ={id}")
-                images = []
-                for x in mycursor.fetchall():
-                    img = x[0]
-                    images.append(img)
-                attract_info = {
-                    "id": id,
-                    "name": name,
-                    "category": category,
-                    "description": description,
-                    "address": address,
-                    "transport": transport,
-                    "mrt": mrt,
-                    "latitude": latitude,
-                    "longitude": longitude,
-                    "images": images
+
+    if total > 0:
+        for i in range(0, total, 12):
+
+            if page == i/12:
+                mycursor.execute("SELECT id, name, category, description, address, transport, mrt, latitude, longitude FROM attractions WHERE name LIKE %s LIMIT %s, 12", (f'%{keyword}%', i))
+                db_data = mycursor.fetchall()
+                page_data = {
+                    "nextPage": page+1 if page < (total//12) else None,
+                    "data": []
                 }
-                page_data["data"].append(attract_info)
-        elif page > (total // 12):
-            page_data = {
-                "error": True,
-                "message": "伺服器內部錯誤，此頁無景點資料，請試試前頁"
-            }
+                for i in range(len(db_data)):
+                    (id, name, category, description, address, transport, mrt, latitude, longitude) = db_data[i]
+                    mycursor.execute(f"SELECT img_url FROM photos WHERE attraction_id ={id}")
+                    images = []
+
+                    for x in mycursor.fetchall():
+                        img = x[0]
+                        images.append(img)
+
+                    attract_info = {
+                        "id": id,
+                        "name": name,
+                        "category": category,
+                        "description": description,
+                        "address": address,
+                        "transport": transport,
+                        "mrt": mrt,
+                        "latitude": latitude,
+                        "longitude": longitude,
+                        "images": images
+                    }
+
+                    page_data["data"].append(attract_info)
+
+            elif page > (total // 12):
+                page_data = {
+                    "error": True,
+                    "message": "伺服器內部錯誤，此頁無景點資料，請試試前頁"
+                }
+
+    else:
+        page_data = {
+                    "error": True,
+                    "message": "查無此景點資料"
+                }
+
     return jsonify(page_data)
 
 
@@ -87,14 +100,17 @@ def attract_id(attractionId):
     try:
         mycursor.execute(f"SELECT id, name, category, description, address, transport, mrt, latitude, longitude FROM attractions WHERE id = {attractionId}")
         attract_data = mycursor.fetchone()
+
         if mycursor.rowcount == 1:
             (id, name, category, description, address, transport, mrt, latitude, longitude) = attract_data
             mycursor.execute(
-                f"SELECT img_url FROM photos WHERE attraction_id ={attractionId}")
+                "SELECT img_url FROM photos WHERE attraction_id =%s", (attractionId,))
             images = []
+
             for x in mycursor.fetchall():
                 img = x[0]
                 images.append(img)
+
             attract_info = {
                 "data": {
                     "id": id,
@@ -109,17 +125,20 @@ def attract_id(attractionId):
                     "images": images
                 }
             }
+
         else:
             attract_info = {
                 "error": True,
                 "message": "景點編號不正確"
             }
+
     except:
         attract_info = {
             "error": True,
             "message": "伺服器內部錯誤"
         }
+
     return jsonify(attract_info)
 
 
-app.run(port=3000)
+app.run(host='0.0.0.0', port=3000)
