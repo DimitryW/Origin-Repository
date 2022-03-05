@@ -98,13 +98,12 @@ def api_attractions():
 @app.route("/api/attraction/<attractionId>")
 def attract_id(attractionId):
     try:
-        mycursor.execute(f"SELECT id, name, category, description, address, transport, mrt, latitude, longitude FROM attractions WHERE id = {attractionId}")
+        mycursor.execute("SELECT id, name, category, description, address, transport, mrt, latitude, longitude FROM attractions WHERE id = %s", (attractionId,))
         attract_data = mycursor.fetchone()
 
         if mycursor.rowcount == 1:
             (id, name, category, description, address, transport, mrt, latitude, longitude) = attract_data
-            mycursor.execute(
-                "SELECT img_url FROM photos WHERE attraction_id =%s", (attractionId,))
+            mycursor.execute("SELECT img_url FROM photos WHERE attraction_id =%s", (attractionId,))
             images = []
 
             for x in mycursor.fetchall():
