@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>首頁</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/index.css') }}">
+
+</head>
+
+<body id="body">
+
+    <div class="topnav-wrapper ">
+        <!-- <button onclick="fetchData();">test</button> -->
+        <div class="topnav ">
+            <div class="nav-title " style="font-size: 30px; ">台北一日遊</div>
+            <div class="nav-item1 " style="font-size: 16px; ">預定行程</div>
+            <div class="nav-item2 " style="font-size: 16px; ">註冊/登入</div>
+        </div>
+    </div>
+    <div class=" wrapper " id="wrapper">
+
+        <div class="hero-wrapper ">
+
+            <div class="hero-img ">
+                <div class="hero">
+                    <div>
+                        <div class="hero-head">輕鬆享受台北一日悠閒</div>
+                        <div class="hero-text">探索每個角落，體驗城市的深度旅遊行程</div>
+                        <div class="hero-input">
+                            <input id="keyword" type="text " placeholder="輸入景點名稱查詢 ">
+                            <button onclick="searchKeyword()"><img src="{{url_for( 'static', filename='photos/icon_search.png' )}} "/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="content-wrapper">
+            <div class="content" id="content">
+
+            </div>
+        </div>
+
+        <div class="footer">
+            <div id="footer">COPYRIGHT © 2021 台北一日遊</div>
+        </div>
+        <div id="end"></div>
+    </div>
+    <script type="text/javascript " src="{{ url_for( 'static',filename='script/index.js' ) }} "></script>
+</body>
+
+</html>
