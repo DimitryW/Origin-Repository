@@ -181,14 +181,13 @@ body {
     display: flex;
     flex-wrap: wrap;
     width: 1200px;
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 
 /* 各景點小區塊 */
 
 [id^="box"] {
-    flex: none;
     display: grid;
     grid-template-rows: 170px 30px 40px;
     border-radius: 5px;

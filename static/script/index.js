@@ -4,6 +4,7 @@ let keyword = "";
 
 // 取得景點資料，並新增照片資料到網頁
 const fetchData = () => {
+    // let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
     let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
     let listName = [];
     let listMrt = [];
@@ -102,7 +103,8 @@ const searchKeyword = () => {
     console.log("KW" + page);
     page = 0;
     keyword = document.getElementById("keyword").value;
-    src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+    let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+    // let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
     fetch(src)
         .then(function(response) {
             return response.json();
