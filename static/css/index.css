@@ -1,0 +1,312 @@
+body {
+    display: grid;
+    font-style: normal;
+    grid-template-rows: 54px 1fr;
+}
+
+
+/* 上方navbar */
+
+.topnav-wrapper {
+    display: flex;
+    position: sticky;
+    grid-row: 1/2;
+    width: 100%;
+    top: 0;
+    background-color: #FFFFFF;
+    justify-content: center;
+}
+
+.topnav {
+    display: grid;
+    height: 54px;
+    grid-template-columns: 1fr 85px 87px;
+    background-color: #FFFFFF;
+}
+
+
+/* navbar大字 */
+
+.nav-title {
+    grid-column: 1/2;
+    justify-self: left;
+    align-self: center;
+    color: #448899;
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 30px;
+}
+
+
+/* navbar右邊兩排小字 */
+
+.nav-item1 {
+    grid-column: 2/3;
+    justify-self: right;
+    align-self: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+}
+
+.nav-item2 {
+    grid-column: 3/4;
+    justify-self: right;
+    align-self: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
+    margin-right: 10px;
+}
+
+
+/* hero區塊 */
+
+.hero-wrapper {
+    width: 100%;
+    height: 320px;
+    background-image: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+}
+
+
+/* hero背景圖 */
+
+.hero-img {
+    background-image: url('../photos/welcome.png');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    display: block;
+}
+
+.hero {
+    display: grid;
+    margin: 0 auto;
+    height: 320px;
+    padding: 0 10px;
+    align-items: center;
+}
+
+
+/* hero大字 */
+
+.hero-head {
+    margin-left: 10px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #F8F8F8;
+}
+
+
+/* hero小字 敘述文字 */
+
+.hero-text {
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 15px;
+    margin-left: 10px;
+    color: #F8F8F8;
+}
+
+
+/* hero搜尋輸入框 */
+
+.hero-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 46px;
+    text-align: left;
+    margin-top: 25px;
+    margin-left: 10px;
+}
+
+#input {
+    grid-column: 1/2;
+    font-size: 16px;
+    font-weight: normal;
+    width: 400px;
+    height: 46px;
+    font-weight: 700;
+    color: #757575;
+    padding: 15px;
+    border: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+
+/* hero搜尋按鈕 */
+
+.hero-input button {
+    grid-column: 2/3;
+    width: 60px;
+    height: 46px;
+    border: none;
+    background-color: #448899;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+/* hero搜尋按鈕圖示 */
+
+.search-icon img {
+    width: 30px;
+    height: 30px;
+    line-height: 23px
+}
+
+.content-wrapper {
+    margin-top: 55px;
+    justify-content: center;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ffffff;
+}
+
+[id^="box"] {
+    flex: none;
+    float: left;
+    display: grid;
+    grid-template-rows: 170px 30px 40px;
+    width: 270px;
+    height: 240px;
+    margin: 12px;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+    text-align: center;
+    grid-template-areas: "img img" "name name" "mrt category";
+}
+
+[id^="box"] img {
+    grid-area: img;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    display: block;
+}
+
+[id^="name"] {
+    grid-area: name;
+    height: 100%;
+    text-align: left;
+    grid-area: name;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 10px;
+    color: #757575;
+}
+
+[id^="mrt"] {
+    grid-area: mrt;
+    max-height: 100%;
+    text-align: left;
+    grid-area: mrt;
+    font-weight: normal;
+    font-size: 16px;
+    margin: 10px;
+    color: #757575;
+}
+
+[id^="category"] {
+    grid-area: category;
+    max-height: 100%;
+    text-align: right;
+    grid-area: category;
+    font-weight: normal;
+    font-size: 16px;
+    margin: 10px;
+    color: #757575;
+}
+
+
+/* 最底部區塊 */
+
+.footer {
+    width: 100%;
+    font-size: 16px;
+    height: 104px;
+    color: white;
+    background-color: #757575;
+    text-align: center;
+    line-height: 104px;
+    /* margin-top: 55px; */
+}
+
+
+/* 無此景點顯示文字 */
+
+#errMsg {
+    font-size: 30px;
+    margin-bottom: 55px;
+}
+
+@media screen and (min-width:1200px) {
+    .topnav {
+        width: 1200px;
+    }
+    .hero {
+        width: 1200px;
+    }
+    .hero-input {
+        width: 460px;
+    }
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+        width: 1200px;
+        margin: auto;
+    }
+    [id^="box"] {
+        width: 22.5%;
+        object-fit: cover;
+    }
+}
+
+@media screen and (max-width:1200px) {
+    .topnav {
+        width: 100%;
+    }
+    .hero-img {
+        height: 100%;
+        background-size: auto;
+    }
+    .hero-input {
+        width: 460px;
+    }
+    .content {
+        margin-left: 20px;
+    }
+    [id^="box"] {
+        width: 45%;
+    }
+    [id^="box"] img {
+        width: 100%
+    }
+}
+
+@media screen and (max-width:600px) {
+    .topnav_r {
+        display: none;
+    }
+    .hero-img {
+        background-size: 80%
+    }
+    .hero-input {
+        width: 100%;
+    }
+    .content {
+        margin-left: 5px;
+    }
+    [id^="box"] {
+        width: 90%;
+    }
+}
