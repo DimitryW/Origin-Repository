@@ -16,7 +16,8 @@ inputFunc();
 // 取得景點ID並渲染頁面
 let path = window.location.pathname;
 let id = path.split("/")[2];
-let src = "http://127.0.0.1:3000/api/attraction/" + id;
+// let src = "http://127.0.0.1:3000/api/attraction/" + id;
+let src = "http://3.230.236.135:3000/api/attraction/" + id;
 
 const inputAttributes = {
     name: "switch-button",
