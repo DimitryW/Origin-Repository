@@ -1,7 +1,7 @@
 let page = 0;
 let keyword = "";
-let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
-// let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+// let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
 
 
 // 建立照片資料元素到網頁
