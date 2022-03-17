@@ -58,9 +58,8 @@ const loadAttraction = () => {
             }
             document.getElementsByClassName("data-switch-input-btn")[0].checked = true;
             document.getElementsByClassName("slide")[0].dataset.active = true;
-            inputBtn = document.querySelectorAll(".data-switch-input-btn")
-            console.log(1111)
-            console.log(inputBtn = document.querySelectorAll(".data-switch-input-btn"))
+            // inputBtn = document.querySelectorAll(".data-switch-input-btn")
+            // console.log(inputBtn = document.querySelectorAll(".data-switch-input-btn"))
 
         });
 }
