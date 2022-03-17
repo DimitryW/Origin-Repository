@@ -1,4 +1,5 @@
 body {
+    font-family: 'Noto Sans TC', sans-serif;
     display: grid;
     font-style: normal;
     grid-template-rows: 54px 1fr;
@@ -44,7 +45,7 @@ body {
     grid-column: 2/3;
     justify-self: right;
     align-self: center;
-    font-weight: bold;
+    font-weight: 400;
     font-size: 16px;
     color: #666666;
 }
@@ -53,7 +54,7 @@ body {
     grid-column: 3/4;
     justify-self: right;
     align-self: center;
-    font-weight: bold;
+    font-weight: 400;
     font-size: 16px;
     color: #666666;
     margin-right: 10px;
@@ -182,6 +183,8 @@ body {
     border: 1px solid #E8E8E8;
     text-align: center;
     grid-template-areas: "img img" "name name" "mrt category";
+    text-decoration: none;
+    /* box已從<div>改為<a>元素作為連結，把連結底線去掉 */
 }
 
 [id^="box"] img {

@@ -1,0 +1,348 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-style: normal;
+}
+
+.page-container {
+    position: relative;
+    min-height: 100vh;
+    font-weight: 400;
+    font-size: 16px;
+    color: #666666;
+}
+
+.page-wrapper {
+    padding-bottom: 204px;
+    /* Footer height */
+    display: grid;
+    grid-template-rows: 54px 1fr;
+}
+
+.topnav-wrapper {
+    grid-row: 1/2;
+    position: sticky;
+    display: flex;
+    top: 0;
+    z-index: 4;
+    background-color: #FFFFFF;
+    justify-content: center;
+}
+
+
+/* 上方navbar */
+
+.topnav {
+    position: sticky;
+    display: flex;
+    grid-row: 1/2;
+    width: 100%;
+    top: 0;
+    display: grid;
+    height: 54px;
+    grid-template-columns: 1fr 76px 83px;
+    background-color: #FFFFFF;
+    justify-content: center;
+}
+
+
+/* navbar大字 */
+
+.nav-title {
+    grid-column: 1/2;
+    justify-self: left;
+    align-self: center;
+    color: #448899;
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 30px;
+}
+
+
+/* navbar右邊兩排小字 */
+
+.nav-item1 {
+    grid-column: 2/3;
+    justify-self: right;
+    align-self: center;
+    font-weight: 400;
+    font-size: 16px;
+    color: #666666;
+}
+
+.nav-item2 {
+    grid-column: 3/4;
+    justify-self: right;
+    align-self: center;
+    font-weight: 400;
+    font-size: 16px;
+    color: #666666;
+}
+
+.content-wrapper {
+    grid-row: 2/3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.section {
+    display: grid;
+    /* flex-wrap: wrap; */
+    grid-template-columns: 54fr 60fr;
+    /* height: 480px; */
+    border-bottom: 1px solid #E8E8E8;
+    column-gap: 30px;
+    /* align-items: center; */
+    /* border-bottom-style: solid;
+    border-color: #E8E8E8; */
+}
+
+
+/* img {
+    height: 406px;
+    width: 100%;
+    object-fit: cover;
+    background-color: #448899;
+    margin-top: 37px;
+    margin-bottom: 37px;
+    border-radius: 5px;
+} */
+
+.profile {
+    display: grid;
+    grid-template-rows: 3fr 10fr;
+    margin-top: 15px;
+    /* height: 392px; */
+}
+
+#name {
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.booking {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: #E8E8E8;
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+    margin-bottom: 48px;
+    /* height: 302px; */
+}
+
+.booking>button {
+    width: 154px;
+    height: 36px;
+    background: #448899;
+    border: #FFFFFF;
+    border-radius: 5px;
+    font-weight: 400;
+    font-size: 19px;
+    color: #FFFFFF;
+    margin-top: 15px;
+}
+
+.timeInput:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -1px;
+    left: -2px;
+    position: relative;
+    background-color: #FFFFFF;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid #FFFFFF;
+}
+
+.timeInput:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    position: relative;
+    background-color: #448899;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid #FFFFFF;
+}
+
+.info {
+    /* height: 442px; 會導致footer無法固定底部，會被內容區塊超過*/
+    padding-top: 50px;
+}
+
+.info>div {
+    margin: 20px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 104px;
+    /* Footer height */
+    font-weight: 700;
+    font-size: 16px;
+    color: white;
+    background-color: #757575;
+    text-align: center;
+    line-height: 104px;
+}
+
+@media screen and (min-width:1200px) {
+    .topnav {
+        width: 1200px;
+    }
+    .content {
+        width: 1200px;
+    }
+}
+
+@media screen and (max-width:1200px) {
+    .content {
+        width: 100%;
+    }
+    .section {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:750px) {
+    .section {
+        grid-template-columns: 1fr;
+    }
+    .profile {
+        grid-template-rows: auto auto;
+    }
+    .booking {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width:360px) {
+    .section {
+        grid-template-columns: 1fr;
+    }
+    .nav-title {
+        font-size: 28px;
+    }
+    .profile {
+        grid-template-rows: auto auto;
+    }
+    .booking {
+        height: 300px;
+    }
+}
+
+
+/* 照片與輪播功能 */
+
+.carousel {
+    width: 100%;
+    height: 406px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+
+.carousel>ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.slide {
+    height: 406px;
+    width: 100%;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: 200ms opacity ease-in-out;
+    transition-delay: 200ms;
+    padding-top: 37px;
+    padding-bottom: 37px;
+}
+
+.slide>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.slide[data-active] {
+    opacity: 1;
+    z-index: 1;
+    transition-delay: 0ms;
+}
+
+.carousel-button {
+    position: absolute;
+    z-index: 2;
+    background: none;
+    border: none;
+    height: 36px;
+    width: 36px;
+    top: 185px;
+}
+
+.carousel-button img {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    top: 0;
+    left: 0;
+}
+
+.carousel-button:hover {
+    color: white;
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 50%;
+}
+
+.carousel-button.prev {
+    left: 10px;
+    padding: 0px;
+}
+
+.carousel-button.next {
+    right: 10px;
+    padding: 0px;
+}
+
+.data-switch-input {
+    position: absolute;
+    z-index: 3;
+    bottom: 40px;
+    background: none;
+    border: none;
+}
+
+.data-switch-input-btn:after {
+    width: 12px;
+    height: 12px;
+    margin: 3px;
+}
+
+.data-switch-input-btn:checked:after {
+    position: relative;
+    border-radius: 12px;
+    top: -3px;
+    left: -3px;
+    background-color: #000000;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid #FFFFFF;
+}
