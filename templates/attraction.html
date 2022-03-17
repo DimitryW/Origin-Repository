@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/attraction.css" />
+</head>
+
+<body onload="loadAttraction();">
+    <div class="page-container">
+        <div class="page-wrapper">
+
+            <div class="topnav-wrapper">
+                <div class="topnav ">
+                    <div class="nav-title">台北一日遊</div>
+                    <div class="nav-item1">預定行程</div>
+                    <div class="nav-item2">註冊/登入</div>
+                </div>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="content">
+                    <div class="section">
+                        <div class="carousel" data-carousel>
+                            <button class="carousel-button prev" data-carousel-button="prev"><img src="../static/photos/btn_leftArrow.png"></button>
+                            <button class="carousel-button next" data-carousel-button="next"><img src="../static/photos/btn_rightArrow.png"></button>
+                            <div class="data-switch-input">
+
+                            </div>
+                            <ul id="slide-list" data-slides>
+
+                            </ul>
+                        </div>
+
+
+
+                        <div class="profile">
+                            <div style="margin-bottom: 20px; margin-top: 20px;">
+                                <div id="name"></div>
+                                <span id="cat"></span><span style="margin:0px 5px 0px 5px;">at</span><span id="mrt"></span>
+                            </div>
+
+                            <div class="booking">
+                                <div style="font-weight: 700;">訂購導覽行程</div>
+                                <div>以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                                <div class="date">
+                                    <label style="font-weight: 700;">選擇日期：</label>
+                                    <input type="date" id="date">
+                                </div>
+                                <div class="time" onload="inputFunc();" onclick="inputFunc();">
+                                    <span style="font-weight: 700;">選擇時間：</span>
+                                    <input class="timeInput" type="radio" name="time" value="morning" onclick="" checked>
+                                    <label for="morning" style="margin-right: 18px;">上半天</label>
+                                    <input class="timeInput" type="radio" name="time" value="afternoon">
+                                    <label for="afternoon">下半天</label>
+                                </div>
+
+                                <div class="fee">
+                                    <span style="font-weight: 700;">導覽費用：</span>
+                                    <span id="fee"></span>
+                                </div>
+                                <button>開始預訂行程</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div>
+                            <div id="desc"></div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 16px;height: 32px; margin-top: 20px;">景點地址：</div>
+                            <div id="add"></div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 16px; height: 32px; margin-top: 20px;">交通方式：</div>
+                            <div id="trans"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">COPYRIGHT © 2021 台北一日遊</footer>
+    </div>
+    <script type="text/javascript " src="../static/script/slide.js"></script>
+
+</body>
+
+</html>

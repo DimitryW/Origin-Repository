@@ -1,14 +1,15 @@
 let page = 0;
 let keyword = "";
-// let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
-let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+// let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
 
 
 // 建立照片資料元素到網頁
+// 新增id建立連結
 let i = 0;
-const showData = (listN, listM, listC, listI) => {
+const showData = (listN, listM, listC, listI, ListD) => {
     for (let count = 0; count < listN.length; count++) {
-        let divBox = document.createElement("div");
+        let aBox = document.createElement("a");
         let divName = document.createElement("div");
         let divMrt = document.createElement("div");
         let divCat = document.createElement("div");
@@ -16,15 +17,16 @@ const showData = (listN, listM, listC, listI) => {
         let nameText = document.createTextNode(listN[count]);
         let mrtText = document.createTextNode(listM[count]);
         let catText = document.createTextNode(listC[count]);
-        divBox.id = "box" + i;
+        aBox.id = "box" + i;
         divName.id = "name" + i;
         divMrt.id = "mrt" + i;
         divCat.id = "category" + i;
         img.src = listI[count];
+        aBox.href = "http://127.0.0.1:3000/attraction/" + ListD[count];
         divName.appendChild(nameText);
         divMrt.appendChild(mrtText);
         divCat.appendChild(catText);
-        document.getElementsByClassName("content")[0].appendChild(divBox);
+        document.getElementsByClassName("content")[0].appendChild(aBox);
         document.getElementById("box" + i).appendChild(img);
         document.getElementById("box" + i).appendChild(divName);
         document.getElementById("box" + i).appendChild(divMrt);
@@ -46,12 +48,14 @@ let callback = (entry) => {
         console.log("SCROLL CALLBACK OK")
 
         if (page != null) {
-            src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
-            // src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+            // src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+            src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
             let listName = [];
             let listMrt = [];
             let listCat = [];
             let listImg = [];
+            let listId = [];
+            // 新增id作為連結網址id
 
             fetch(src)
                 .then((response) => {
@@ -74,12 +78,14 @@ let callback = (entry) => {
                             let mrt = result.data[i].mrt;
                             let cat = result.data[i].category;
                             let img = result.data[i].images[0]
+                            let id = result.data[i].id;
                             listName.push(name);
                             listMrt.push(mrt);
                             listCat.push(cat);
                             listImg.push(img);
+                            listId.push(id);
                         }
-                        showData(listName, listMrt, listCat, listImg);
+                        showData(listName, listMrt, listCat, listImg, listId);
                         console.log("nextPage: " + page);
                         console.log("keyword: " + keyword);
                     }
