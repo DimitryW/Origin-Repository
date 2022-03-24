@@ -1,6 +1,6 @@
 const loginButton = document.getElementById("nav-item2");
-let memberSrc = "http://3.230.236.135:3000/api/user;
-    // let memberSrc = "http://127.0.0.1:3000/api/user";
+let memberSrc = "http://3.230.236.135:3000/api/user";
+// let memberSrc = "http://127.0.0.1:3000/api/user";
 let headers = {
     "Content-type": "application/json"
 };
