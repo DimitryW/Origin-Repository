@@ -21,7 +21,7 @@ body {
 .topnav {
     display: grid;
     height: 54px;
-    grid-template-columns: 1fr 85px 87px;
+    grid-template-columns: 1fr 76px 88px;
     background-color: #FFFFFF;
 }
 
@@ -54,10 +54,184 @@ body {
     grid-column: 3/4;
     justify-self: right;
     align-self: center;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-style: normal;
     font-weight: 400;
     font-size: 16px;
     color: #666666;
+    background-color: #FFFFFF;
+    border: none;
     margin-right: 10px;
+    padding: 0;
+}
+
+.nav-item2:hover {
+    font-weight: 600;
+}
+
+.nav-item2:active {
+    font-weight: 600;
+    transform: translateY(2px);
+}
+
+#backdrop {
+    background: #000;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    filter: alpha(opacity=100);
+    opacity: 0.5;
+    display: none;
+    z-index: 99;
+}
+
+#signup {
+    position: absolute;
+    top: 80px;
+    width: 340px;
+    background-color: #FFFFFF;
+    display: grid;
+    grid-template-rows: 10px auto auto auto;
+    z-index: 100;
+    justify-content: center;
+    justify-items: center;
+    border-radius: 6px;
+}
+
+#signin {
+    position: absolute;
+    top: 80px;
+    width: 340px;
+    background-color: #FFFFFF;
+    display: grid;
+    grid-template-rows: 10px auto auto auto;
+    z-index: 100;
+    justify-content: center;
+    justify-items: center;
+    border-radius: 6px;
+}
+
+#member-div-top {
+    width: 340px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+#signin-title {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    width: 340px;
+    text-align: center;
+    color: #666666;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 47px;
+}
+
+#close-icon {
+    position: absolute;
+    top: 17px;
+    left: 307px;
+    z-index: 101;
+    background-color: #FFFFFF;
+    border: none;
+}
+
+#close-icon img {
+    width: 16px;
+    height: 16px;
+    top: 10px;
+    position: absolute;
+    right: 0px;
+}
+
+#close-icon:active {
+    transform: translateY(2px);
+}
+
+#signin-form {
+    display: grid;
+    grid-template-rows: 47px 47px auto;
+    gap: 10px;
+}
+
+#username,
+#email,
+#password {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    padding: 15px;
+    line-height: 47px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #666666;
+    border-radius: 5px;
+    border: 1px solid #CCCCCC;
+}
+
+#signin-button {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    width: 310px;
+    height: 47px;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 47px;
+    color: #FFFFFF;
+    background: #448899;
+    border: none;
+    border-radius: 5px;
+}
+
+#signin-button:hover {
+    background: #438494;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.19), 0px 5px 5px 0px rgba(0, 0, 0, 0.19);
+}
+
+#signin-button:active {
+    transform: translateY(2px);
+}
+
+#signup-message,
+#signin-message {
+    font-weight: 400;
+    font-size: 16px;
+    color: red;
+    text-align: center;
+    margin: 10px;
+}
+
+#switch-button {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    height: 22px;
+    line-height: 22px;
+    border: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #666666;
+    background: #FFFFFF;
+    margin: 10px;
+    margin-top: 0;
+}
+
+#switch-button:hover {
+    font-weight: 600;
+}
+
+#switch-button:active {
+    font-weight: 600;
+    transform: translateY(2px);
+}
+
+#signup-form {
+    display: grid;
+    grid-template-rows: 47px 47px 47px auto;
+    gap: 10px;
 }
 
 
@@ -117,22 +291,20 @@ body {
 
 .hero-input {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 40fr 6fr;
     height: 46px;
     text-align: left;
     margin-top: 25px;
     margin-left: 10px;
 }
 
-#input {
-    grid-column: 1/2;
-    font-size: 16px;
-    font-weight: normal;
-    width: 400px;
-    height: 46px;
+#keyword {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
     font-weight: 700;
+    font-size: 16px;
     color: #757575;
-    padding: 15px;
+    padding-left: 15px;
     border: none;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -300,11 +472,15 @@ body {
     .topnav_r {
         display: none;
     }
+    .nav-title {
+        font-size: 28px;
+    }
     .hero-img {
         background-size: 80%
     }
     .hero-input {
         width: 100%;
+        grid-template-columns: 210px 60px;
     }
     .content {
         margin-left: 5px;
