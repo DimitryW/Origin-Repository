@@ -1,5 +1,6 @@
 from flask import *
-import json
+import jwt
+import time
 import mysql.connector
 
 app = Flask(__name__)
@@ -15,8 +16,10 @@ mydb = mysql.connector.connect(
     auth_plugin='mysql_native_password'
 )
 
-mycursor = mydb.cursor()
+mycursor = mydb.cursor(buffered=True)
 
+app.secret_key = "wingardiumleviosawingardiumleviosa"
+# key = "wingardiumleviosawingardiumleviosa"
 
 # Pages
 @app.route("/")
@@ -140,12 +143,103 @@ def attract_id(attractionId):
     return jsonify(attract_info)
 
 
-
-
-
-
-
-if __name__=="__main__":
-    app.run(host='0.0.0.0', port=3000)
-    # app.run(port=3000)
+@app.route("/api/user", methods=["GET", "POST", "PATCH", "DELETE"])
+def user():
+    # check signin
     
+    if request.method == "GET":
+        if "email" in session:
+        # token = request.cookies.get("wehelp")
+        # if token:
+            # decoded_jwt = jwt.decode(encoded_jwt, key, algorithms="HS256")
+            email = session["email"]
+            sql = "SELECT id, name, email FROM members where email=%s"
+            mycursor.execute(sql, (email,))  
+            member_data = mycursor.fetchone()
+            loggedin_api = {
+                "data": {
+                    "id": member_data[0],
+                    "name": member_data[1],
+                    "email": member_data[2]
+                }
+            }
+        else:
+            loggedin_api = {
+                "data": None
+            }
+        return jsonify(loggedin_api)
+
+# sign up
+    elif request.method == "POST":
+        request_data = request.get_json()
+        name = request_data["name"]
+        email = request_data["email"]
+        password = request_data["password"]
+        sql = "SELECT COUNT(*) FROM members WHERE email=%s"
+        mycursor.execute(sql, (email,))
+        data = mycursor.fetchone()
+        if data[0] == 0:
+            sql = "INSERT INTO members (name, email, password) VALUES (%s, %s, %s)"
+            val = (name, email, password)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            signup_api = {
+                "ok": True
+            }
+        elif data[0] == 1:
+            signup_api = {
+                "error": True,
+                "message": "註冊失敗，重複的 Email 或其他原因。"
+            }
+        else:
+            signup_api = {
+                "error": True,
+                "message": "伺服器內部錯誤。"
+            }
+        return jsonify(signup_api)
+
+# sign in
+    elif request.method == "PATCH":
+        request_data = request.get_json()
+        email = request_data["email"]
+        password = request_data["password"]
+        sql = "SELECT COUNT(*) FROM members WHERE email=%s AND password=%s"
+        mycursor.execute(sql, (email, password))
+        data = mycursor.fetchone()
+        if data[0] == 1:
+            # encoded_jwt = jwt.encode({"email": email}, key, algorithm="HS256")
+            session["email"] = email
+            session["password"] = password
+            signin_api = {
+                "ok": True
+            }
+            # resp = make_response(signin_api)
+            # resp.set_cookie(key="wehelp", value=encoded_jwt, expires=time.time()+6*60)
+            return jsonify(signin_api)
+        elif data[0] == 0:
+            signin_api = {
+                "error": True,
+                "message": "登入失敗，帳號或密碼錯誤或其他原因"
+            }
+            return jsonify(signin_api)
+        else:
+            signin_api = {
+                "error": True,
+                "message": "伺服器內部錯誤"
+            }
+            return jsonify(signin_api)
+        
+
+# log out
+    elif request.method == "DELETE":
+        session.clear()
+        loggedout_api = {
+            "ok": True
+        }
+        return jsonify(loggedout_api)
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=3000)
+    # app.debug = True
+    # app.run(port=3000)

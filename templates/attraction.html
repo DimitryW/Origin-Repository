@@ -12,15 +12,17 @@
     <link rel="stylesheet" type="text/css" href="../static/css/attraction.css" />
 </head>
 
-<body onload="loadAttraction();">
+<body>
     <div class="page-container">
         <div class="page-wrapper">
 
             <div class="topnav-wrapper">
+                <div id="backdrop"></div>
                 <div class="topnav ">
-                    <div class="nav-title">台北一日遊</div>
+                    <!-- <a class="nav-title" href="http://127.0.0.1:3000/">台北一日遊</a> -->
+                    <a class="nav-title" href="http://3.230.236.135:3000/">台北一日遊</a>
                     <div class="nav-item1">預定行程</div>
-                    <div class="nav-item2">註冊/登入</div>
+                    <button class="nav-item2" id="nav-item2">註冊/登入</button>
                 </div>
             </div>
 
@@ -88,7 +90,15 @@
         </div>
         <footer class="footer">COPYRIGHT © 2021 台北一日遊</footer>
     </div>
-    <script type="text/javascript " src="../static/script/attraction.js"></script>
+    <script type="text/javascript" src="../static/script/attraction.js"></script>
+    <script type="text/javascript" src="../static/script/member.js"></script>
+    <script type="text/javascript">
+        window.addEventListener("DOMContentLoaded", loggedIn);
+        window.onload = () => {
+            loadAttraction();
+            // loggedIn();
+        };
+    </script>
 
 </body>
 

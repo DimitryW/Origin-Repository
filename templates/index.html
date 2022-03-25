@@ -10,13 +10,15 @@
 
 </head>
 
-<body id="body">
+<body id="body" onload="loggedIn();">
 
     <div class="topnav-wrapper ">
+        <!-- backdrop要跟跳出視窗放在同一層，z-index才會正確起作用 -->
+        <div id="backdrop"></div>
         <div class="topnav ">
             <div class="nav-title ">台北一日遊</div>
             <div class="nav-item1 ">預定行程</div>
-            <div class="nav-item2 ">註冊/登入</div>
+            <button class="nav-item2" id="nav-item2">註冊/登入</button>
         </div>
     </div>
     <div class=" wrapper " id="wrapper">
@@ -47,7 +49,9 @@
         </div>
         <div id="end"></div>
     </div>
-    <script type="text/javascript " src="{{ url_for( 'static',filename='script/index.js' ) }} "></script>
+    <script type="text/javascript " src="../static/script/index.js"></script>
+    <script type="text/javascript " src="../static/script/member.js"></script>
+
 </body>
 
 </html>
