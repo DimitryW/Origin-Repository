@@ -93,10 +93,11 @@
     <script type="text/javascript" src="../static/script/attraction.js"></script>
     <script type="text/javascript" src="../static/script/member.js"></script>
     <script type="text/javascript">
-        window.addEventListener("DOMContentLoaded", loggedIn);
+        // window.addEventListener("DOMContentLoaded", loggedIn);
+        // 另建一個新db connection或改成用connection pool，解決onload無法同時觸發多個function(串接API)問題
         window.onload = () => {
             loadAttraction();
-            // loggedIn();
+            loggedIn();
         };
     </script>
 
