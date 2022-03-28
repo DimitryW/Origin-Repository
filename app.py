@@ -30,6 +30,7 @@ dbconfig = {
   "database": "wehelp2",
   "user": "root",
   "password": "vaapad666",
+  "auth_plugin":'mysql_native_password'
 }
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = "mypool", pool_size = 3, pool_reset_session=True, **dbconfig)
 
