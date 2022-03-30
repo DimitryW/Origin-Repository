@@ -177,12 +177,12 @@ def user():
     # mycursor = mydb2.cursor(buffered = True)
     cnx1 = cnxpool.get_connection()
     mycursor = cnx1.cursor()
-    # check signin
+# check signin
     if request.method == "GET":
         # if "email" in session:
-        token = request.cookies.get("wehelp_user")
-        if token:
-            decoded_jwt = jwt.decode(token, key, algorithms="HS256")
+        user_token = request.cookies.get("wehelp_user")
+        if user_token:
+            decoded_jwt = jwt.decode(user_token, key, algorithms=["HS256"])
             # email = session["email"]
             email = decoded_jwt["email"]
             sql = "SELECT id, name, email FROM members where email=%s"
@@ -201,7 +201,7 @@ def user():
             }
         mycursor.close()
         cnx1.close()
-        return jsonify(loggedin_api)
+        return jsonify(loggedin_api), 200
 
 # sign up
     elif request.method == "POST":
@@ -222,20 +222,26 @@ def user():
             signup_api = {
                 "ok": True
             }
+            mycursor.close()
+            cnx1.close()
+            return jsonify(signup_api), 200
         elif data[0] == 1:
             signup_api = {
                 "error": True,
                 "message": "註冊失敗，重複的 Email 或其他原因。"
             }
+            mycursor.close()
+            cnx1.close()
+            return jsonify(signup_api), 400
         else:
             signup_api = {
                 "error": True,
                 "message": "伺服器內部錯誤。"
             }
-        mycursor.close()
-        cnx1.close()
-        return jsonify(signup_api)
-
+            mycursor.close()
+            cnx1.close()
+            return jsonify(signup_api), 500
+        
 # sign in
     elif request.method == "PATCH":
         request_data = request.get_json()
@@ -251,8 +257,8 @@ def user():
             signin_api = {
                 "ok": True
             }
-            resp = make_response(signin_api)
-            resp.set_cookie(key="wehelp_user", value=encoded_jwt, expires=time.time()+6*60)
+            resp = make_response((signin_api),200)
+            resp.set_cookie(key="wehelp_user", value=encoded_jwt, expires=time.time()+60*60)
             # return jsonify(signin_api)
             mycursor.close()
             cnx1.close()
@@ -264,7 +270,7 @@ def user():
             }
             mycursor.close()
             cnx1.close()
-            return jsonify(signin_api)
+            return jsonify(signin_api), 400
         else:
             signin_api = {
                 "error": True,
@@ -272,23 +278,117 @@ def user():
             }
             mycursor.close()
             cnx1.close()
-            return jsonify(signin_api)
+            return jsonify(signin_api), 500
         
-
 # log out
     elif request.method == "DELETE":
         # session.clear()
         loggedout_api = {
             "ok": True
         }
-        resp = make_response(loggedout_api)
+        resp = make_response((loggedout_api), 200)
         resp.set_cookie("wehelp_user", "", expires=0)
         # return jsonify(loggedout_api)
         mycursor.close()
         cnx1.close()
         return resp
 
+
+
+@app.route("/api/booking", methods=["GET", "POST", "DELETE"])
+def api_booking():
+    user_token = request.cookies.get("wehelp_user")
+    booking_token = request.cookies.get("wehelp_booking")
+    if request.method == "GET":
+        if user_token:
+            cnx = cnxpool.get_connection()
+            mycursor = cnx.cursor(buffered=True)
+            decoded_booking_jwt = jwt.decode(booking_token, key, algorithms=["HS256"])
+            mycursor.execute("SELECT name, address FROM attractions WHERE id=%s", (decoded_booking_jwt["id"],))
+            attraction_data = mycursor.fetchone()
+            mycursor.execute("SELECT img_url FROM photos WHERE attraction_id=%s", (decoded_booking_jwt["id"],))
+            img_url = mycursor.fetchone()[0]
+            booking_api = {
+            "data": {
+                "attraction": {
+                "id": decoded_booking_jwt["id"],
+                "name": attraction_data[0],
+                "address": attraction_data[1],
+                "image": img_url
+                },
+                "date": decoded_booking_jwt["date"],
+                "time": decoded_booking_jwt["time"],
+                "price": decoded_booking_jwt["price"]
+                }
+            }
+            mycursor.close()
+            cnx.close()
+            return jsonify(booking_api), 200
+        else:
+            booking_api = {
+                "error": True,
+                "message": "未登入系統，拒絕存取"
+                }
+            return jsonify(booking_api), 403
+    elif request.method == "POST":
+        request_data = request.get_json()
+        attract_id = request_data["attractionId"]
+        date = request_data["date"]
+        travel_time = request_data["time"]
+        price = request_data["price"]
+        try:
+            if user_token:
+                if date != "":
+                    booking_api = {
+                    "ok": True
+                    }
+                    jwt_booking_data = {
+                        "id": attract_id,
+                        "date":date,
+                        "time":travel_time, # 注意變數名稱不要跟 time 重複
+                        "price":price
+                    }
+                    encoded_jwt = jwt.encode(jwt_booking_data, key, algorithm="HS256")
+                    resp = make_response((booking_api), 200)
+                    resp.set_cookie("wehelp_booking", encoded_jwt, expires=time.time()+60*60)
+                    return resp
+                else:
+                    booking_api = {
+                        "error": True,
+                        "message": "建立失敗，輸入不正確或其他原因"
+                        }
+                    return jsonify(booking_api), 400    
+            else:
+                booking_api = {
+                    "error": True,
+                    "message": "未登入系統，拒絕存取"
+                    }
+                return jsonify(booking_api), 403
+        except:
+            booking_api = {
+                    "error": True,
+                    "message": "伺服器內部錯誤"
+                    }
+            return jsonify(booking_api), 500
+        
+    elif request.method == "DELETE":
+        if user_token:
+                booking_api = {
+                    "ok": True
+                    }
+                resp = make_response(jsonify(booking_api), 200) 
+                resp.set_cookie("wehelp_booking", "", expires=0)
+                return resp
+        else:
+            booking_api = {
+                "error": True,
+                "message": "未登入系統，拒絕存取"
+                }
+            return jsonify(booking_api), 403
+    
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=3000)
-    # app.debug = True
-    # app.run(port=3000)
+    # app.run(host='0.0.0.0', port=3000)
+    app.debug = True
+    app.run(port=3000)

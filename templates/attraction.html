@@ -21,7 +21,7 @@
                 <div class="topnav ">
                     <!-- <a class="nav-title" href="http://127.0.0.1:3000/">台北一日遊</a> -->
                     <a class="nav-title" href="http://3.230.236.135:3000/">台北一日遊</a>
-                    <div class="nav-item1">預定行程</div>
+                    <button class="nav-item1" id="nav-item1"><a id="nav-item1-a" style="text-decoration: none;">預定行程</a></button>
                     <button class="nav-item2" id="nav-item2">註冊/登入</button>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                                 <span id="cat"></span><span style="margin:0px 5px 0px 5px;">at</span><span id="mrt"></span>
                             </div>
 
-                            <div class="booking">
+                            <div class="booking" id="booking">
                                 <div style="font-weight: 700;">訂購導覽行程</div>
                                 <div>以此景點為中心的一日行程，帶您探索城市角落故事</div>
                                 <div class="date">
@@ -67,7 +67,8 @@
                                     <span style="font-weight: 700;">導覽費用：</span>
                                     <span id="fee"></span>
                                 </div>
-                                <button>開始預訂行程</button>
+                                <button id="booking-button" onclick="createBooking();">開始預訂行程</button>
+                                <div id="error-message" style="color: red;"></div>
                             </div>
                         </div>
                     </div>
@@ -92,6 +93,7 @@
     </div>
     <script type="text/javascript" src="../static/script/attraction.js"></script>
     <script type="text/javascript" src="../static/script/member.js"></script>
+    <script type="text/javascript" src="../static/script/booking.js"></script>
     <script type="text/javascript">
         // window.addEventListener("DOMContentLoaded", loggedIn);
         // 另建一個新db connection或改成用connection pool，解決onload無法同時觸發多個function(串接API)問題

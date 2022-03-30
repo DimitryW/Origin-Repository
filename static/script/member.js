@@ -1,9 +1,10 @@
 const loginButton = document.getElementById("nav-item2");
-let memberSrc = "http://3.230.236.135:3000/api/user";
-// let memberSrc = "http://127.0.0.1:3000/api/user";
+// let memberSrc = "http://3.230.236.135:3000/api/user";
+let memberSrc = "http://127.0.0.1:3000/api/user";
 let headers = {
     "Content-type": "application/json"
 };
+let membername = "";
 
 // 登入功能 (把原本FORM改掉，直接取INPUT的值去fetch，不然FORM會刷新頁面)
 const signinWindow = () => {
@@ -147,24 +148,29 @@ const signupWindow = () => {
     // loginButton.removeEventListener("click", signinWindow);
 }
 
+
 // 檢查會員登入狀況
 const loggedIn = () => {
-    console.log(1)
     fetch(memberSrc, {
             method: "GET",
             headers: headers
         })
         .then((response) => {
-            console.log(2)
             return response.json();
         })
         .then((result) => {
             if (result["data"]) {
-                console.log(result["data"]["name"])
+                membername = result["data"]["name"];
+                console.log(membername);
                 loginButton.innerHTML = "登出系統";
                 loginButton.removeEventListener("click", signinWindow);
                 loginButton.addEventListener("click", logout);
                 console.log("already logged in.")
+                document.getElementById("nav-item1").removeEventListener("click", signinWindow);
+                document.getElementById("nav-item1-a").setAttribute("href", "http://127.0.0.1:3000/booking");
+                // document.getElementById("nav-item1").setAttribute("href", "http://3.230.236.135:3000/booking");
+            } else {
+                document.getElementById("nav-item1").addEventListener("click", signinWindow);
             }
         })
 }
@@ -178,18 +184,15 @@ const signin = () => {
         "email": email,
         "password": password
     };
-    console.log(1)
     fetch(memberSrc, {
             method: "PATCH",
             headers: headers,
             body: JSON.stringify(body)
         })
         .then((response) => {
-            console.log(2)
             return response.json();
         })
         .then((result) => {
-            console.log(3)
             if (result["ok"]) {
                 window.location.reload();
             } else {
@@ -213,7 +216,7 @@ const signup = () => {
         return;
     }
     if (!nameRegex.test(name)) {
-        document.getElementById("signup-message").innerHTML = "請輸入正確姓名格式，最少輸入2個字";
+        document.getElementById("signup-message").innerHTML = "請輸入正確姓名格式";
         return;
     }
     if (!emailRegex.test(email)) {
@@ -230,14 +233,12 @@ const signup = () => {
         "email": email,
         "password": password
     };
-    console.log(1)
     fetch(memberSrc, {
             method: "POST",
             headers: headers,
             body: JSON.stringify(body)
         })
         .then((response) => {
-            console.log(2)
             return response.json();
         })
         .then((result) => {
@@ -252,21 +253,23 @@ const signup = () => {
 
 // 會員登出功能
 const logout = () => {
-    console.log(1)
     fetch(memberSrc, {
             method: "DELETE",
             headers: headers
         })
         .then((response) => {
-            console.log(2)
             return response.json();
         })
         .then((result) => {
-            console.log(3)
             if (result["ok"]) {
                 loginButton.innerHTML = "註冊/登入";
                 loginButton.removeEventListener("click", logout);
                 loginButton.addEventListener("click", signinWindow);
+                document.getElementById("nav-item1-a").removeAttribute("href"); // 移除預定行程按鈕連結
+                document.getElementById("nav-item1").addEventListener("click", signinWindow);
+            }
+            if (window.location.pathname === "/booking") {
+                location.href = "http://127.0.0.1:3000";
             }
             console.log("logged out!")
         })
