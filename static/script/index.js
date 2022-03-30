@@ -1,7 +1,7 @@
 let page = 0;
 let keyword = "";
-let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
-// let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+// let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
 
 
 // 建立照片資料元素到網頁
@@ -22,8 +22,8 @@ const showData = (listN, listM, listC, listI, ListD) => {
         divMrt.id = "mrt" + i;
         divCat.id = "category" + i;
         img.src = listI[count];
-        aBox.href = "http://127.0.0.1:3000/attraction/" + ListD[count];
-        // aBox.href = "http://3.230.236.135:3000/attraction/" + ListD[count];
+        // aBox.href = "http://127.0.0.1:3000/attraction/" + ListD[count];
+        aBox.href = "http://3.230.236.135:3000/attraction/" + ListD[count];
         divName.appendChild(nameText);
         divMrt.appendChild(mrtText);
         divCat.appendChild(catText);
@@ -49,8 +49,8 @@ let callback = (entry) => {
         console.log("SCROLL CALLBACK OK")
 
         if (page != null) {
-            // src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
-            src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+            src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+            // src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
             let listName = [];
             let listMrt = [];
             let listCat = [];
