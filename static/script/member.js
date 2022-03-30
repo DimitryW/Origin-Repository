@@ -168,9 +168,9 @@ const loggedIn = () => {
                 console.log("already logged in.")
                 document.getElementById("nav-item1").removeEventListener("click", signinWindow);
                 // document.getElementById("nav-item1-a").setAttribute("href", "http://127.0.0.1:3000/booking");
-                document.getElementById("nav-item1").setAttribute("href", "http://3.230.236.135:3000/booking");
+                document.getElementById("nav-item1-a").setAttribute("href", "http://3.230.236.135:3000/booking");
             } else {
-                document.getElementById("nav-item1").addEventListener("click", signinWindow);
+                document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
             }
         })
 }
@@ -266,7 +266,7 @@ const logout = () => {
                 loginButton.removeEventListener("click", logout);
                 loginButton.addEventListener("click", signinWindow);
                 document.getElementById("nav-item1-a").removeAttribute("href"); // 移除預定行程按鈕連結
-                document.getElementById("nav-item1").addEventListener("click", signinWindow);
+                document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
             }
             if (window.location.pathname === "/booking") {
                 location.href = "http://3.230.236.135:3000";
