@@ -1,6 +1,6 @@
 const loginButton = document.getElementById("nav-item2");
-// let memberSrc = "http://3.230.236.135:3000/api/user";
-let memberSrc = "http://127.0.0.1:3000/api/user";
+let memberSrc = "http://3.230.236.135:3000/api/user";
+// let memberSrc = "http://127.0.0.1:3000/api/user";
 let headers = {
     "Content-type": "application/json"
 };
@@ -167,8 +167,8 @@ const loggedIn = () => {
                 loginButton.addEventListener("click", logout);
                 console.log("already logged in.")
                 document.getElementById("nav-item1").removeEventListener("click", signinWindow);
-                document.getElementById("nav-item1-a").setAttribute("href", "http://127.0.0.1:3000/booking");
-                // document.getElementById("nav-item1").setAttribute("href", "http://3.230.236.135:3000/booking");
+                // document.getElementById("nav-item1-a").setAttribute("href", "http://127.0.0.1:3000/booking");
+                document.getElementById("nav-item1").setAttribute("href", "http://3.230.236.135:3000/booking");
             } else {
                 document.getElementById("nav-item1").addEventListener("click", signinWindow);
             }
@@ -269,7 +269,8 @@ const logout = () => {
                 document.getElementById("nav-item1").addEventListener("click", signinWindow);
             }
             if (window.location.pathname === "/booking") {
-                location.href = "http://127.0.0.1:3000";
+                location.href = "http://3.230.236.135:3000";
+                // location.href = "http://127.0.0.1:3000";                
             }
             console.log("logged out!")
         })

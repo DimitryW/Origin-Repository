@@ -1,5 +1,5 @@
-// const bookingSrc = "http://3.230.236.135:3000/api/booking";
-const bookingSrc = "http://127.0.0.1:3000/api/booking";
+const bookingSrc = "http://3.230.236.135:3000/api/booking";
+// const bookingSrc = "http://127.0.0.1:3000/api/booking";
 const bookingHeaders = { "Content-type": "application/json" };
 
 // 開始預訂行程
@@ -30,8 +30,8 @@ async function createBooking() {
         });
         let result = await response.json();
         if (result["ok"]) {
-            // location.href = "http://3.230.236.135:3000/booking";
-            location.href = "http://127.0.0.1:3000/booking";
+            location.href = "http://3.230.236.135:3000/booking";
+            // location.href = "http://127.0.0.1:3000/booking";
         }
     } catch (error) {
         console.log(error);
@@ -42,8 +42,8 @@ async function createBooking() {
 // 取得預定行程資訊
 async function checkBooking() {
     if (!document.cookie.includes("wehelp_user")) {
-        // location.href = "http://3.230.236.135:3000";
-        location.href = "http://127.0.0.1:3000";
+        location.href = "http://3.230.236.135:3000";
+        // location.href = "http://127.0.0.1:3000";
         return
     }
     try {
