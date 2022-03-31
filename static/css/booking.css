@@ -1,0 +1,197 @@
+#booking-greeting {
+    font-size: 19px;
+    font-weight: 700;
+    margin-top: 46px;
+    justify-self: center;
+}
+
+.booking-content {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 400;
+    justify-self: center;
+    display: none;
+}
+
+#nobooking {
+    display: none;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 35px 0 40px;
+    justify-self: center;
+}
+
+#contact-name,
+#contact-email,
+#contact-number,
+#card-number,
+#valid-thru,
+#Validation {
+    width: 220px;
+    height: 38px;
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.booking-info-detail {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#booking-info-img {
+    object-fit: cover;
+    left: 958px;
+    height: 200px;
+    margin: 35px 0px 40px 8px;
+    padding-right: 22px;
+}
+
+#delete-booking {
+    float: right;
+    width: 30px;
+    height: 30px;
+    background-image: url("../photos/icon_delete.png");
+    border: none;
+    background-color: #FFFFFF;
+}
+
+#delete-booking:hover {
+    font-weight: 600;
+}
+
+#delete-booking:active {
+    font-weight: 600;
+    transform: translateY(2px);
+}
+
+.confirmation {
+    display: grid;
+    justify-items: right;
+}
+
+.confirmation>div {
+    float: right;
+    font-weight: 700;
+    margin: 43px 110px 25px 0px;
+}
+
+#confirm-button {
+    float: right;
+    border: none;
+    width: 173px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 19px;
+    font-weight: 400;
+    color: #FFFFFF;
+    background: #448899;
+    border-radius: 5px;
+    margin: 0px 110px 62px 0px;
+}
+
+#confirm-button:hover {
+    background: #438494;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.19), 0px 5px 5px 0px rgba(0, 0, 0, 0.19);
+}
+
+#confirm-button:active {
+    transform: translateY(2px);
+}
+
+.booking-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 104px;
+    /* Footer height */
+    font-weight: 700;
+    font-size: 16px;
+    color: white;
+    background-color: #757575;
+    text-align: center;
+    line-height: 104px;
+}
+
+@media screen and (min-width:1200px) {
+    .topnav {
+        width: 1200px;
+    }
+    #booking-greeting,
+    #nobooking {
+        width: 1200px;
+        padding-left: 100px;
+    }
+    .booking-info,
+    .contact-info,
+    .payment-info {
+        width: 1200px;
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+    #booking-info-img {
+        width: 266px;
+    }
+    #itinerary {
+        width: 934px;
+    }
+    .border-bottom {
+        width: 1200px;
+    }
+}
+
+@media screen and (max-width:1200px) {
+    #booking-greeting,
+    #nobooking,
+    .booking-content,
+    #itinerary,
+    .border-bottom {
+        width: 100%;
+    }
+    #nobooking,
+    #booking-greeting {
+        padding-left: 0px;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .booking-info-detail {
+        display: block;
+    }
+    #booking-info-img {
+        height: 256px;
+        width: 100%;
+    }
+    .booking-info,
+    .contact-info,
+    .payment-info {
+        height: auto;
+    }
+    #delete-booking {
+        position: absolute;
+        right: 0;
+        top: 620px;
+    }
+    .border-bottom1 {
+        margin-top: 65px;
+    }
+    .border-bottom2,
+    .border-bottom3 {
+        margin-top: 40px;
+    }
+    .confirmation>div {
+        margin: 43px 0px 25px 0px;
+    }
+    #confirm-button {
+        margin-right: 0px;
+    }
+}
+
+@media screen and (max-width:360px) {
+    .nav-title {
+        font-size: 28px;
+    }
+}

@@ -1,3 +1,9 @@
+const today = new Date();
+const year = today.getFullYear();
+const month = ("0" + (today.getMonth() + 1)).slice(-2);
+const date = ("0" + (today.getDate())).slice(-2);
+const datetime = year + "-" + month + "-" + date;
+
 // 切換費用金額
 const inputFunc = () => {
     let value = document.querySelector('input[name="time"]:checked').value;
@@ -44,6 +50,8 @@ const loadAttraction = () => {
             document.getElementById("desc").innerHTML = result.data.description;
             document.getElementById("add").innerHTML = result.data.address;
             document.getElementById("trans").innerHTML = result.data.transport;
+            document.getElementById("date").setAttribute("min", datetime);
+            window.document.title = "台北一日遊 " + result.data.name;
             let imgList = result.data.images;
             for (let i = 0; i < imgList.length; i++) {
                 let input = document.createElement("input");

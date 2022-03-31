@@ -45,9 +45,17 @@ body {
     grid-column: 2/3;
     justify-self: right;
     align-self: center;
+    font-family: 'Noto Sans TC', sans-serif;
     font-weight: 400;
     font-size: 16px;
     color: #666666;
+    border: none;
+    background-color: #FFFFFF;
+}
+
+#nav-item1-a:visited {
+    color: #666666;
+    ;
 }
 
 .nav-item2 {
@@ -65,10 +73,12 @@ body {
     padding: 0;
 }
 
+.nav-item1:hover,
 .nav-item2:hover {
     font-weight: 600;
 }
 
+.nav-item1:active,
 .nav-item2:active {
     font-weight: 600;
     transform: translateY(2px);
@@ -341,6 +351,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     background-color: #ffffff;
+    margin-bottom: 55px;
 }
 
 [id^="box"] {
@@ -357,6 +368,11 @@ body {
     grid-template-areas: "img img" "name name" "mrt category";
     text-decoration: none;
     /* box已從<div>改為<a>元素作為連結，把連結底線去掉 */
+}
+
+[id^="box"]:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.19), 0px 5px 5px 0px rgba(0, 0, 0, 0.19);
 }
 
 [id^="box"] img {
@@ -438,7 +454,7 @@ body {
         display: flex;
         flex-wrap: wrap;
         width: 1200px;
-        margin: auto;
+        margin: auto auto 55px auto;
     }
     [id^="box"] {
         width: 22.5%;
