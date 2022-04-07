@@ -267,7 +267,8 @@ const logout = () => {
                 loginButton.addEventListener("click", signinWindow);
                 document.getElementById("nav-item1-a").removeAttribute("href"); // 移除預定行程按鈕連結
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
-            } else {
+            }
+            if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou') {
                 location.href = "http://3.230.236.135:3000";
                 // location.href = "http://127.0.0.1:3000";
             }
