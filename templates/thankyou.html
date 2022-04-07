@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/attraction.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/booking.css" />
+    <title>台北一日遊 預定行程</title>
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-wrapper" id="page-wrapper">
+            <div class="topnav-wrapper">
+                <div id="backdrop"></div>
+                <div class="topnav ">
+                    <!-- <a class="nav-title" href="http://127.0.0.1:3000/">台北一日遊</a> -->
+                    <a class="nav-title" href="http://3.230.236.135:3000/">台北一日遊</a>
+                    <button class="nav-item1" id="nav-item1"><a id="nav-item1-a" style="text-decoration: none;">預定行程</a></button>
+                    <button class="nav-item2" id="nav-item2">註冊/登入</button>
+                </div>
+            </div>
+            <div id="booking-greeting" style="justify-self: start;">行程預定成功，您的訂單資料如下:</div>
+            <div class="booking-info" id="booking-info">
+                <div class="booking-info-detail">
+                    <div id="itinerary" style="margin: 35px 0px 40px;">
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">訂單編號 : <span id="order-no" style="margin-left:5px; font-weight: 400;"></span></div>
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">日期 : <span id="book-date" style="margin-left:5px; font-weight: 400;"></span></div>
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">時間 : <span id="book-time" style="margin-left:5px; font-weight: 400;"></span></div>
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">費用 : <span id="book-charge" style="margin-left:5px; font-weight: 400;"></span></div>
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">地點 : <span id="book-address" style="margin-left:5px; font-weight: 400;"></span></div>
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">聯絡姓名 : <span id="book-name" style="margin-left:5px; font-weight: 400;"></span></div>
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">連絡信箱 : <span id="book-email" style="margin-left:5px; font-weight: 400;"></span></div>
+                        <div style="margin-bottom: 10px; font-size: 16px; font-weight: 400;">手機號碼 : <span id="book-phone" style="margin-left:5px; font-weight: 400;"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="booking-footer" id="booking-footer">COPYRIGHT © 2021 台北一日遊</footer>
+    </div>
+    <script type="text/javascript" src="../static/script/member.js"></script>
+    <script type="text/javascript" src="../static/script/thankyou.js"></script>
+    <script type="text/javascript">
+        window.onload = () => {
+            thankyou();
+        };
+    </script>

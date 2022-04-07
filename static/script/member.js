@@ -270,7 +270,7 @@ const logout = () => {
             }
             if (window.location.pathname === "/booking") {
                 location.href = "http://3.230.236.135:3000";
-                // location.href = "http://127.0.0.1:3000";                
+                // location.href = "http://127.0.0.1:3000";
             }
             console.log("logged out!")
         })

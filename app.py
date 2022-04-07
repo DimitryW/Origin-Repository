@@ -1,62 +1,31 @@
 from flask import *
 import jwt
 import time
-import mysql.connector
-import mysql.connector.pooling
+
+from sympy import Or
+from model.model import AttractionDB, PhotosDB, MemberDB, OrdersDB
+from config import jwt_key
+import requests
+import json
+import datetime
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False  # not to Sort the keys of JSON objects alphabetically
 
-# mydb1 = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="vaapad666",
-#     database="wehelp2",
-#     auth_plugin='mysql_native_password'
-# )
 
-# mydb2 = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="vaapad666",
-#     database="wehelp2",
-#     auth_plugin='mysql_native_password'
-# )
-
-# connection pool
-dbconfig = {
-  "database": "wehelp2",
-  "user": "root",
-  "password": "vaapad666",
-  "auth_plugin":'mysql_native_password'
-}
-cnxpool = mysql.connector.pooling.MySQLConnectionPool(pool_name = "mypool", pool_size = 3, pool_reset_session=True, **dbconfig)
-
-# session key
-# app.secret_key = "wingardiumleviosawingardiumleviosa"
-
-# jwt key
-key = "wingardiumleviosawingardiumleviosa"
-
-
-
-# Pages
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 @app.route("/attraction/<id>")
 def attraction(id):
     return render_template("attraction.html")
 
-
 @app.route("/booking")
 def booking():
     return render_template("booking.html")
-
 
 @app.route("/thankyou")
 def thankyou():
@@ -65,35 +34,27 @@ def thankyou():
 
 @app.route("/api/attractions")
 def api_attractions():
-    cnx1 = cnxpool.get_connection()
-    mycursor = cnx1.cursor()
-    # mycursor = mydb1.cursor(buffered=True)
     page = request.args.get("page", default=0, type=int)
     keyword = request.args.get("keyword", default="", type=str)
-    mycursor.execute("SELECT COUNT(*) FROM attractions WHERE name LIKE %s", (f'%{keyword}%',))
-    (total,) = mycursor.fetchone()
-
+    (total,) = AttractionDB.search_name(keyword)
     if total > 0:
         for i in range(0, total, 12):
-
             if page == i/12:
-                mycursor.execute("SELECT id, name, category, description, address, transport, mrt, latitude, longitude FROM attractions WHERE name LIKE %s LIMIT %s, 12", (f'%{keyword}%', i))
-                db_data = mycursor.fetchall()
+                col_list = ['id', 'name', 'category', 'description', 'address', 'transport', 'mrt', 'latitude', 'longitude']
+                db_data = AttractionDB.search_detail_by_name(keyword, col_list, index=i, limit=12)
                 page_data = {
                     "nextPage": page+1 if page < (total//12) else None,
                     "data": []
                 }
                 for i in range(len(db_data)):
-                    (id, name, category, description, address, transport, mrt, latitude, longitude) = db_data[i]
-                    mycursor.execute(f"SELECT img_url FROM photos WHERE attraction_id ={id}")
+                    (attract_id, name, category, description, address, transport, mrt, latitude, longitude) = db_data[i]
+                    img_urls = PhotosDB.search_img(attract_id)
                     images = []
-
-                    for x in mycursor.fetchall():
+                    for x in img_urls:
                         img = x[0]
                         images.append(img)
-
                     attract_info = {
-                        "id": id,
+                        "id": attract_id,
                         "name": name,
                         "category": category,
                         "description": description,
@@ -104,46 +65,35 @@ def api_attractions():
                         "longitude": longitude,
                         "images": images
                     }
-
                     page_data["data"].append(attract_info)
-
             elif page > (total // 12):
                 page_data = {
                     "error": True,
                     "message": "伺服器內部錯誤，此頁無景點資料，請試試前頁"
                 }
-
     else:
         page_data = {
                     "error": True,
                     "message": "查無此景點資料"
                 }
-    mycursor.close()
-    cnx1.close()
     return jsonify(page_data)
 
 
 @app.route("/api/attraction/<attractionId>")
 def attract_id(attractionId):
-    # mycursor = mydb1.cursor(buffered=True)
-    cnx1 = cnxpool.get_connection()
-    mycursor = cnx1.cursor()
     try:
-        mycursor.execute("SELECT id, name, category, description, address, transport, mrt, latitude, longitude FROM attractions WHERE id = %s", (attractionId,))
-        attract_data = mycursor.fetchone()
-
-        if mycursor.rowcount == 1:
-            (id, name, category, description, address, transport, mrt, latitude, longitude) = attract_data
-            mycursor.execute("SELECT img_url FROM photos WHERE attraction_id =%s", (attractionId,))
+        col_list = ['id', 'name', 'category', 'description', 'address', 'transport', 'mrt', 'latitude', 'longitude']
+        attract_data = AttractionDB.search_detail_by_id(attractionId, col_list)
+        if len(attract_data) == 1:
+            (attract_id, name, category, description, address, transport, mrt, latitude, longitude) = attract_data[0]
+            img_urls = PhotosDB.search_img(attract_id)
             images = []
-
-            for x in mycursor.fetchall():
+            for x in img_urls:
                 img = x[0]
                 images.append(img)
-
             attract_info = {
                 "data": {
-                    "id": id,
+                    "id": attract_id,
                     "name": name,
                     "category": category,
                     "description": description,
@@ -155,39 +105,27 @@ def attract_id(attractionId):
                     "images": images
                 }
             }
-
         else:
             attract_info = {
                 "error": True,
                 "message": "景點編號不正確"
             }
-
     except:
         attract_info = {
             "error": True,
             "message": "伺服器內部錯誤"
         }
-    mycursor.close()
-    cnx1.close()
     return jsonify(attract_info)
 
 
 @app.route("/api/user", methods=["GET", "POST", "PATCH", "DELETE"])
 def user():
-    # mycursor = mydb2.cursor(buffered = True)
-    cnx1 = cnxpool.get_connection()
-    mycursor = cnx1.cursor()
-# check signin
     if request.method == "GET":
-        # if "email" in session:
         user_token = request.cookies.get("wehelp_user")
         if user_token:
-            decoded_jwt = jwt.decode(user_token, key, algorithms=["HS256"])
-            # email = session["email"]
+            decoded_jwt = jwt.decode(user_token, jwt_key, algorithms=["HS256"])
             email = decoded_jwt["email"]
-            sql = "SELECT id, name, email FROM members where email=%s"
-            mycursor.execute(sql, (email,))  
-            member_data = mycursor.fetchone()
+            member_data = MemberDB.search_member(email)
             loggedin_api = {
                 "data": {
                     "id": member_data[0],
@@ -199,8 +137,6 @@ def user():
             loggedin_api = {
                 "data": None
             }
-        mycursor.close()
-        cnx1.close()
         return jsonify(loggedin_api), 200
 
 # sign up
@@ -209,37 +145,24 @@ def user():
         name = request_data["name"]
         email = request_data["email"]
         password = request_data["password"]
-        sql = "SELECT COUNT(*) FROM members WHERE email=%s"
-        mycursor.execute(sql, (email,))
-        data = mycursor.fetchone()
-        if data[0] == 0:
-            sql = "INSERT INTO members (name, email, password) VALUES (%s, %s, %s)"
-            val = (name, email, password)
-            mycursor.execute(sql, val)
-            # mydb.commit()
-            # do the commit in connection while using connection pool
-            cnx1.commit()
+        member_count = MemberDB.count_member(email)
+        if member_count == 0:
+            MemberDB.create_member(name, email, password)
             signup_api = {
                 "ok": True
             }
-            mycursor.close()
-            cnx1.close()
             return jsonify(signup_api), 200
-        elif data[0] == 1:
+        elif member_count == 1:
             signup_api = {
                 "error": True,
                 "message": "註冊失敗，重複的 Email 或其他原因。"
             }
-            mycursor.close()
-            cnx1.close()
             return jsonify(signup_api), 400
         else:
             signup_api = {
                 "error": True,
                 "message": "伺服器內部錯誤。"
             }
-            mycursor.close()
-            cnx1.close()
             return jsonify(signup_api), 500
         
 # sign in
@@ -247,52 +170,36 @@ def user():
         request_data = request.get_json()
         email = request_data["email"]
         password = request_data["password"]
-        sql = "SELECT COUNT(*) FROM members WHERE email=%s AND password=%s"
-        mycursor.execute(sql, (email, password))
-        data = mycursor.fetchone()
-        if data[0] == 1:
-            encoded_jwt = jwt.encode({"email": email}, key, algorithm="HS256")
-            # session["email"] = email
-            # session["password"] = password
+        data = MemberDB.check_member(email, password)
+        if data == 1:
+            encoded_jwt = jwt.encode({"email": email}, jwt_key, algorithm="HS256")
             signin_api = {
                 "ok": True
             }
             resp = make_response((signin_api),200)
             resp.set_cookie(key="wehelp_user", value=encoded_jwt, expires=time.time()+60*60)
-            # return jsonify(signin_api)
-            mycursor.close()
-            cnx1.close()
             return resp
-        elif data[0] == 0:
+        elif data == 0:
             signin_api = {
                 "error": True,
                 "message": "登入失敗，帳號或密碼錯誤或其他原因"
             }
-            mycursor.close()
-            cnx1.close()
             return jsonify(signin_api), 400
         else:
             signin_api = {
                 "error": True,
                 "message": "伺服器內部錯誤"
             }
-            mycursor.close()
-            cnx1.close()
             return jsonify(signin_api), 500
         
 # log out
     elif request.method == "DELETE":
-        # session.clear()
         loggedout_api = {
             "ok": True
         }
         resp = make_response((loggedout_api), 200)
         resp.set_cookie("wehelp_user", "", expires=0)
-        # return jsonify(loggedout_api)
-        mycursor.close()
-        cnx1.close()
         return resp
-
 
 
 @app.route("/api/booking", methods=["GET", "POST", "DELETE"])
@@ -301,28 +208,23 @@ def api_booking():
     booking_token = request.cookies.get("wehelp_booking")
     if request.method == "GET":
         if user_token:
-            cnx = cnxpool.get_connection()
-            mycursor = cnx.cursor(buffered=True)
-            decoded_booking_jwt = jwt.decode(booking_token, key, algorithms=["HS256"])
-            mycursor.execute("SELECT name, address FROM attractions WHERE id=%s", (decoded_booking_jwt["id"],))
-            attraction_data = mycursor.fetchone()
-            mycursor.execute("SELECT img_url FROM photos WHERE attraction_id=%s", (decoded_booking_jwt["id"],))
-            img_url = mycursor.fetchone()[0]
+            decoded_booking_jwt = jwt.decode(booking_token, jwt_key, algorithms=["HS256"])
+            col_list = ["name", "address"]
+            attraction_data = AttractionDB.search_detail_by_id(decoded_booking_jwt["id"], col_list)
+            img_urls = PhotosDB.search_img(decoded_booking_jwt["id"])
             booking_api = {
             "data": {
                 "attraction": {
                 "id": decoded_booking_jwt["id"],
-                "name": attraction_data[0],
-                "address": attraction_data[1],
-                "image": img_url
+                "name": attraction_data[0][0],
+                "address": attraction_data[0][1],
+                "image": img_urls[0]
                 },
                 "date": decoded_booking_jwt["date"],
                 "time": decoded_booking_jwt["time"],
                 "price": decoded_booking_jwt["price"]
                 }
             }
-            mycursor.close()
-            cnx.close()
             return jsonify(booking_api), 200
         else:
             booking_api = {
@@ -348,7 +250,7 @@ def api_booking():
                         "time":travel_time, # 注意變數名稱不要跟 time 重複
                         "price":price
                     }
-                    encoded_jwt = jwt.encode(jwt_booking_data, key, algorithm="HS256")
+                    encoded_jwt = jwt.encode(jwt_booking_data, jwt_key, algorithm="HS256")
                     resp = make_response((booking_api), 200)
                     resp.set_cookie("wehelp_booking", encoded_jwt, expires=time.time()+60*60)
                     return resp
@@ -386,9 +288,117 @@ def api_booking():
                 }
             return jsonify(booking_api), 403
     
+@app.route("/api/orders", methods=["POST"])
+def receive_order():
+    user_token = request.cookies.get("wehelp_user")
+    try:
+        if user_token:
+            decoded_jwt = jwt.decode(user_token, jwt_key, algorithms=["HS256"])
+            member_email = decoded_jwt["email"]
+            order_data = request.get_json()
+            prime = order_data["prime"]
+            amount = order_data["order"]["price"]
+            name = order_data["order"]["contact"]["name"]
+            email = order_data["order"]["contact"]["email"]
+            phone = order_data["order"]["contact"]["phone"]
+            member_id = MemberDB.search_member(member_email)[0]
+            attract_id = order_data["order"]["trip"]["attraction"]["id"]
+            date = order_data["order"]["trip"]["date"]
+            order_no = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+            OrdersDB.create_order(member_id, attract_id, date, amount, name, email, phone, order_no)
+            url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
+            myobj = {
+                "prime": prime,
+                "partner_key": "partner_hg8xzwvT9v3YB4zGiU3q2WXx7uYKT4CqysbBWChvTvCw3F8D1DtqzCmr",
+                "merchant_id": 'grayfen_TAISHIN',
+                "details": "TapPay Test",
+                "amount": amount,
+                "cardholder": {
+                    "phone_number": phone,
+                    "name": name,
+                    "email": email,
+                },
+                "remember": True
+            }
+            header = {
+                "Content-Type": "application/json",
+                "x-api-key": "partner_hg8xzwvT9v3YB4zGiU3q2WXx7uYKT4CqysbBWChvTvCw3F8D1DtqzCmr"}
+            response = requests.post(url, json=myobj, headers=header)
+            tappay_response = json.loads(response.text)
+            print("\n")
+            print(tappay_response)
+            if tappay_response["status"]==0:
+                OrdersDB.pay_order(order_no)
+                order_response = {
+                    "data": {
+                        "number": order_no,
+                        "payment": {
+                        "status": 0,
+                        "message": "付款成功"
+                        }
+                    }
+                    }
+                return jsonify(order_response), 200
+            else:
+                order_response = {
+                    "error": True,
+                    "message": "訂單建立失敗，輸入不正確或其他原因"
+                    }
+                return jsonify(order_response), 400
+        else:
+            order_response = {
+                "error": True,
+                "message": "未登入系統，拒絕存取"
+                }
+            return jsonify(order_response), 403
+    except:
+        order_response = {
+            "error": True,
+            "message": "伺服器內部錯誤"
+            }
+        return jsonify(order_response), 500
+
+@app.route("/api/order/<order_no>", methods=["GET"])
+def check_order(order_no):
+    user_token = request.cookies.get("wehelp_user")
+    if user_token:
+        (price, attract_id, date, name, email, phone, payment) = OrdersDB.check_order(order_no)
+        (site_name, address) = AttractionDB.search_detail_by_id(attract_id, ["name", "address"])[0]
+        img = PhotosDB.search_img(attract_id)[0]
+        res ={
+            "data": {
+                "number": order_no,
+                "price": price,
+                "trip": {
+                "attraction": {
+                    "id": attract_id,
+                    "name": site_name,
+                    "address": address,
+                    "image": img
+                },
+                "date": date,
+                "time": "morning" if price==2000 else "afternoon"
+                },
+                "contact": {
+                "name": name,
+                "email": email,
+                "phone": phone
+                },
+                "status": 1 if payment=="paid" else 0
+            }
+            }
+        return jsonify(res), 200
+    res = {
+        "error": True,
+        "message": "未登入系統，拒絕存取"
+        }
+    return jsonify(res), 403
+
 
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=3000)
     # app.debug = True
     # app.run(port=3000)
+
+
