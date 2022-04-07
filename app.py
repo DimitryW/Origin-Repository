@@ -1,8 +1,6 @@
 from flask import *
 import jwt
 import time
-
-from sympy import Or
 from model.model import AttractionDB, PhotosDB, MemberDB, OrdersDB
 from config import jwt_key
 import requests
