@@ -73,8 +73,9 @@
                             <label for="cvc" class="control-label">驗證密碼： </label>
                             <div name="" cvc "" class="form-control cvc"></div>
                         </div>
+                        <div id="err-msg" style="display: none; font-size: 16px;">信用卡資料輸入有誤，請重新輸入</div>
                         <div id="total-price">總價：新台幣 <span></span> 元</div><br>
-                        <button id="confirm-button" type="submit" class="btn btn-default" onclick="deleteBooking();">確認訂購並付款</button>
+                        <button id="confirm-button" type="submit" class="btn btn-default">確認訂購並付款</button>
                     </div>
                 </form>
 
@@ -142,16 +143,19 @@
 
             // Check TPDirect.card.getTappayFieldsStatus().canGetPrime before TPDirect.card.getPrime
             if (tappayStatus.canGetPrime === false) {
-                alert('can not get prime')
+                // alert('can not get prime')
+                document.getElementById("err-msg").style.display = "block"
                 return
             }
 
             // Get prime
             TPDirect.card.getPrime(function(result) {
                 if (result.status !== 0) {
-                    alert('get prime error ' + result.msg)
+                    // alert('get prime error ' + result.msg)
+                    document.getElementById("err-msg").style.display = "block"
                     return
                 }
+                confirmBooking();
                 send_order(result.card.prime);
             })
         })
