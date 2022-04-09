@@ -48,7 +48,7 @@
                 <div class="border-bottom1" style="border-bottom: 1px solid #E8E8E8;"></div>
 
                 <div class="contact-info">
-                    <div id="contact-err-msg" style="display: none; font-size: 19px; color: red;">請輸入聯絡資訊</div>
+                    <div id="contact-err-msg" style="display: none; font-size: 19px; color: red; margin-top:30px ;">請輸入聯絡資訊</div>
                     <div style="font-size: 19px; font-weight: 700; margin: 44px 0px 24px 0px;">您的聯絡資訊</div>
                     <label for="contact-name">聯絡姓名：</label>
                     <input id="contact-name" name="contact-name" type="text" style="margin: 0px 0px 15px 8px;"><br>
@@ -144,6 +144,8 @@
             if (name === "" | email === "" | number === "") {
                 document.getElementById("contact-err-msg").style.display = "block";
                 return
+            } else {
+                document.getElementById("contact-err-msg").style.display = "none";
             }
 
             const tappayStatus = TPDirect.card.getTappayFieldsStatus()
