@@ -99,7 +99,7 @@ async function checkBooking() {
         if (result["error"]) {
             document.getElementById("booking-greeting").innerHTML = "您好，" + membername + "，待預訂的行程如下："
             document.getElementById("nobooking").style.display = "block";
-            document.getElementById("booking-footer").style.height = "680px";
+            document.getElementById("booking-footer").style.height = "80vh";
             document.getElementById("page-wrapper").style.paddingBottom = 0;
             document.getElementById("booking-footer").style.position = "relative";
         }
@@ -139,7 +139,7 @@ async function confirmBooking() {
         let result = await response.json();
         if (result["ok"]) {
             document.getElementById("booking-content").style.display = "none";
-            document.getElementById("booking-greeting").innerHTML = "交易處理中...";
+            document.getElementById("booking-greeting").innerHTML = "正在預定行程...";
             document.getElementById("booking-footer").style.height = "80vh";
             document.getElementById("page-wrapper").style.paddingBottom = 0;
             document.getElementById("booking-footer").style.position = "relative";
