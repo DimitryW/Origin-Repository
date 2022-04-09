@@ -131,13 +131,6 @@ async function deleteBooking() {
 }
 
 async function confirmBooking() {
-    let name = document.getElementById("contact-name").value;
-    let email = document.getElementById("contact-email").value;
-    let number = document.getElementById("contact-number").value;
-    if (name === "" | email === "" | number === "") {
-        document.getElementById("contact-err-msg").style.display = "block";
-        return
-    }
     try {
         let response = await fetch(bookingSrc, {
             method: "DELETE",
