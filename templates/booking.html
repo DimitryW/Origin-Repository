@@ -154,7 +154,7 @@
             // Check TPDirect.card.getTappayFieldsStatus().canGetPrime before TPDirect.card.getPrime
             if (tappayStatus.canGetPrime === false) {
                 // alert('can not get prime')
-                document.getElementById("card-err-msg").style.display = "block"
+                document.getElementById("card-err-msg").style.display = "block";
                 return
             }
 
@@ -162,9 +162,10 @@
             TPDirect.card.getPrime(function(result) {
                 if (result.status !== 0) {
                     // alert('get prime error ' + result.msg)
-                    document.getElementById("card-err-msg").style.display = "block"
+                    document.getElementById("card-err-msg").style.display = "block";
                     return
                 }
+                document.getElementById("card-err-msg").style.display = "none";
                 confirmBooking();
                 send_order(result.card.prime);
             })
