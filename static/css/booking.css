@@ -1,7 +1,7 @@
 #booking-greeting {
     font-size: 19px;
     font-weight: 700;
-    margin-top: 46px;
+    margin: 46px 0 35px;
     justify-self: center;
 }
 
@@ -18,10 +18,11 @@
     display: none;
     font-size: 16px;
     font-weight: 400;
-    margin: 35px 0 40px;
+    margin: 0 0 40px;
     justify-self: center;
 }
 
+.form-control,
 #contact-name,
 #contact-email,
 #contact-number,
@@ -34,6 +35,17 @@
     border: 1px solid #E8E8E8;
     border-radius: 5px;
     padding-left: 10px;
+}
+
+.form-control {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .booking-info-detail {
@@ -78,6 +90,14 @@
     margin: 43px 110px 25px 0px;
 }
 
+#total-price {
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    float: right;
+}
+
 #confirm-button {
     float: right;
     border: none;
@@ -90,7 +110,7 @@
     color: #FFFFFF;
     background: #448899;
     border-radius: 5px;
-    margin: 0px 110px 62px 0px;
+    margin: 25px 0 62px 0;
 }
 
 #confirm-button:hover {
@@ -125,6 +145,7 @@
         width: 1200px;
         padding-left: 100px;
     }
+    #thankyou-greeting,
     .booking-info,
     .contact-info,
     .payment-info {

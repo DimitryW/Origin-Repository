@@ -211,7 +211,7 @@ const signup = () => {
     let nameRegex = /^([\u4e00-\u9fa5]{2,20}|[a-zA-Z.\s]{2,20})$/;
     let emailRegex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
     // let pwRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_ `\-={}:";'<>?,.\/]).{3,18}$/;
-    if (name == "" || email == "" || password == "") {
+    if (name === "" || email === "" || password === "") {
         document.getElementById("signup-message").innerHTML = "欄位不可為空，請輸入!";
         return;
     }
@@ -268,9 +268,9 @@ const logout = () => {
                 document.getElementById("nav-item1-a").removeAttribute("href"); // 移除預定行程按鈕連結
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
             }
-            if (window.location.pathname === "/booking") {
+            if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou') {
                 location.href = "http://3.230.236.135:3000";
-                // location.href = "http://127.0.0.1:3000";                
+                // location.href = "http://127.0.0.1:3000";
             }
             console.log("logged out!")
         })

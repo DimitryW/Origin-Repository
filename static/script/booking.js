@@ -60,7 +60,7 @@ async function checkBooking() {
         document.getElementById("booking-content").style.display = "none";
         document.getElementById("booking-greeting").innerHTML = "您好，" + membername + "，待預訂的行程如下："
         document.getElementById("nobooking").style.display = "block";
-        document.getElementById("booking-footer").style.height = "680px";
+        document.getElementById("booking-footer").style.height = "80vh";
         document.getElementById("page-wrapper").style.paddingBottom = 0;
         document.getElementById("booking-footer").style.position = "relative";
         return
@@ -83,16 +83,23 @@ async function checkBooking() {
             let bookingPrice = result["data"]["price"];
             let bookingAddress = result["data"]["attraction"]["address"];
             document.getElementById("attractName").innerHTML = name;
+            let div = document.createElement("div");
+            div.id = "attractId";
+            div.style.display = "none";
+            let text = document.createTextNode(result["data"]["attraction"]["id"]);
+            div.appendChild(text);
+            document.getElementById("attractName").appendChild(div);
             document.getElementById("book-date").innerHTML = bookingDate
             document.getElementById("book-time").innerHTML = bookingTime
             document.getElementById("book-charge").innerHTML = "新台幣 " + bookingPrice + " 元";
             document.getElementById("book-address").innerHTML = bookingAddress
+            document.querySelector("#total-price>span").innerHTML = bookingPrice;
             return
         }
         if (result["error"]) {
             document.getElementById("booking-greeting").innerHTML = "您好，" + membername + "，待預訂的行程如下："
             document.getElementById("nobooking").style.display = "block";
-            document.getElementById("booking-footer").style.height = "680px";
+            document.getElementById("booking-footer").style.height = "80vh";
             document.getElementById("page-wrapper").style.paddingBottom = 0;
             document.getElementById("booking-footer").style.position = "relative";
         }
@@ -114,9 +121,74 @@ async function deleteBooking() {
             document.getElementById("booking-content").style.display = "none";
             document.getElementById("booking-greeting").innerHTML = "您好，" + membername + "，待預訂的行程如下："
             document.getElementById("nobooking").style.display = "block";
-            document.getElementById("booking-footer").style.height = "680px";
+            document.getElementById("booking-footer").style.height = "80vh";
             document.getElementById("page-wrapper").style.paddingBottom = 0;
             document.getElementById("booking-footer").style.position = "relative";
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function confirmBooking() {
+    try {
+        let response = await fetch(bookingSrc, {
+            method: "DELETE",
+            headers: bookingHeaders
+        });
+        let result = await response.json();
+        if (result["ok"]) {
+            document.getElementById("booking-content").style.display = "none";
+            document.getElementById("booking-greeting").innerHTML = "正在預定行程...";
+            document.getElementById("booking-footer").style.height = "80vh";
+            document.getElementById("page-wrapper").style.paddingBottom = 0;
+            document.getElementById("booking-footer").style.position = "relative";
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// tappay 
+async function send_order(prime) {
+    let tappayRequestBody = {
+        "prime": prime,
+        "order": {
+            "price": document.getElementById("book-date").textContent === "新台幣 2000 元" ? 2000 : 2500,
+            "trip": {
+                "attraction": {
+                    "id": Number(document.getElementById("attractId").textContent),
+                    "name": document.getElementById("attractName").textContent,
+                    "address": document.getElementById("book-address").textContent,
+                    "image": document.getElementById("booking-info-img").src
+                },
+                "date": document.getElementById("book-date").textContent,
+                "time": document.getElementById("book-date").textContent === "新台幣 2000 元" ? "morning" : "afternoon"
+            },
+            "contact": {
+                "name": document.getElementById("contact-name").value,
+                "email": document.getElementById("contact-email").value,
+                "phone": document.getElementById("contact-number").value
+            }
+        }
+    }
+    try {
+        let response = await fetch("http://3.230.236.135:3000/api/orders", {
+            // let response = await fetch("http://127.0.0.1:3000/api/orders", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(tappayRequestBody)
+        });
+        let data = await response.json();
+        order_no = data["data"]["number"];
+        console.log(order_no);
+        if (data['error']) {
+            console.log("back not OK");
+        } else {
+            location.href = "http://3.230.236.135:3000/thankyou?number=" + order_no
+                // location.href = "http://127.0.0.1:3000/thankyou?number=" + order_no
         }
     } catch (error) {
         console.log(error);

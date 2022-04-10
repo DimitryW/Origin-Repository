@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/attraction.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/booking.css" />
+    <title>台北一日遊 預定行程</title>
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-wrapper" id="page-wrapper">
+            <div class="topnav-wrapper">
+                <div id="backdrop"></div>
+                <div class="topnav ">
+                    <!-- <a class="nav-title" href="http://127.0.0.1:3000/">台北一日遊</a> -->
+                    <a class="nav-title" href="http://3.230.236.135:3000/">台北一日遊</a>
+                    <button class="nav-item1" id="nav-item1"><a id="nav-item1-a" style="text-decoration: none;">預定行程</a></button>
+                    <button class="nav-item2" id="nav-item2">註冊/登入</button>
+                </div>
+            </div>
+            <div id="booking-greeting" style="text-align: center; margin-top: 25px; padding: 0;">行程預定成功</div>
+            <div id="booking-greeting" style="text-align: center; margin-top: 15px; padding: 0;">您的訂單資料如下:</div>
+            <div style="margin:35px 0 10px; font-size: 19px; font-weight: 400; text-align: center;">訂單編號 : <span id="order-no" style="margin-left:5px; font-weight: 400;"></span></div>
+            <div style="margin: 15px 0 10px; font-size: 16px; font-weight: 400; text-align: center;">請記住此編號，或到會員中心查詢歷史訂單</div>
+        </div>
+        <footer class="booking-footer" id="booking-footer" style="height: 100vh; position: relative;">COPYRIGHT © 2021 台北一日遊</footer>
+    </div>
+    <script type="text/javascript" src="../static/script/member.js"></script>
+    <script type="text/javascript" src="../static/script/thankyou.js"></script>
+    <script type="text/javascript">
+        window.onload = () => {
+            thankyou();
+            loggedIn();
+        };
+    </script>
