@@ -1,5 +1,5 @@
-const bookingSrc = "http://3.230.236.135:3000/api/booking";
-// const bookingSrc = "http://127.0.0.1:3000/api/booking";
+const bookingSrc = "http://3.230.236.135:3000";
+// const bookingSrc = "http://127.0.0.1:3000";
 const bookingHeaders = { "Content-type": "application/json" };
 
 // 開始預訂行程
@@ -11,6 +11,7 @@ async function createBooking() {
     let date = document.getElementById("date").value;
     if (!date) {
         document.getElementById("error-message").innerHTML = "請選擇日期";
+        document.getElementById("booking-button").style.marginBottom = "0";
         // return
     }
     let attractionId = window.location.pathname.split("/")[2];
@@ -23,15 +24,14 @@ async function createBooking() {
         "price": price
     };
     try {
-        let response = await fetch(bookingSrc, {
+        let response = await fetch(bookingSrc + "/api/booking", {
             method: "POST",
             headers: bookingHeaders,
             body: JSON.stringify(requestBody)
         });
         let result = await response.json();
         if (result["ok"]) {
-            location.href = "http://3.230.236.135:3000/booking";
-            // location.href = "http://127.0.0.1:3000/booking";
+            location.href = bookingSrc + "/booking";
         }
     } catch (error) {
         console.log(error);
@@ -42,12 +42,11 @@ async function createBooking() {
 // 取得預定行程資訊
 async function checkBooking() {
     if (!document.cookie.includes("wehelp_user")) {
-        location.href = "http://3.230.236.135:3000";
-        // location.href = "http://127.0.0.1:3000";
+        location.href = bookingSrc;
         return
     }
     try {
-        let memberResponse = await fetch(memberSrc, {
+        let memberResponse = await fetch(memberSrc + "/api/user", {
             method: "GET",
             headers: headers
         });
@@ -66,7 +65,7 @@ async function checkBooking() {
         return
     }
     try {
-        let response = await fetch(bookingSrc, {
+        let response = await fetch(bookingSrc + "/api/booking", {
             method: "GET",
             headers: bookingHeaders
         });
@@ -83,12 +82,13 @@ async function checkBooking() {
             let bookingPrice = result["data"]["price"];
             let bookingAddress = result["data"]["attraction"]["address"];
             document.getElementById("attractName").innerHTML = name;
-            let div = document.createElement("div");
-            div.id = "attractId";
-            div.style.display = "none";
-            let text = document.createTextNode(result["data"]["attraction"]["id"]);
-            div.appendChild(text);
-            document.getElementById("attractName").appendChild(div);
+            document.getElementById("attractId").innerHTML = result["data"]["attraction"]["id"];
+            // let div = document.createElement("div");
+            // div.id = "attractId";
+            // div.style.display = "none";
+            // let text = document.createTextNode(result["data"]["attraction"]["id"]);
+            // div.appendChild(text);
+            // document.getElementById("attractName").appendChild(div);
             document.getElementById("book-date").innerHTML = bookingDate
             document.getElementById("book-time").innerHTML = bookingTime
             document.getElementById("book-charge").innerHTML = "新台幣 " + bookingPrice + " 元";
@@ -112,7 +112,7 @@ async function checkBooking() {
 // 刪除行程
 async function deleteBooking() {
     try {
-        let response = await fetch(bookingSrc, {
+        let response = await fetch(bookingSrc + "/api/booking", {
             method: "DELETE",
             headers: bookingHeaders
         });
@@ -132,7 +132,7 @@ async function deleteBooking() {
 
 async function confirmBooking() {
     try {
-        let response = await fetch(bookingSrc, {
+        let response = await fetch(bookingSrc + "/api/booking", {
             method: "DELETE",
             headers: bookingHeaders
         });
@@ -173,8 +173,7 @@ async function send_order(prime) {
         }
     }
     try {
-        let response = await fetch("http://3.230.236.135:3000/api/orders", {
-            // let response = await fetch("http://127.0.0.1:3000/api/orders", {
+        let response = await fetch(bookingSrc + "/api/orders", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -187,8 +186,7 @@ async function send_order(prime) {
         if (data['error']) {
             console.log("back not OK");
         } else {
-            location.href = "http://3.230.236.135:3000/thankyou?number=" + order_no
-                // location.href = "http://127.0.0.1:3000/thankyou?number=" + order_no
+            location.href = bookingSrc + "/thankyou?number=" + order_no;
         }
     } catch (error) {
         console.log(error);

@@ -10,13 +10,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../static/css/attraction.css" />
-    <link rel="stylesheet" type="text/css" href="../static/css/booking.css" />
-    <title>台北一日遊 預定行程</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/member.css" />
+    <title>台北一日遊 會員專區</title>
 </head>
 
 <body>
     <div class="page-container">
-        <div class="page-wrapper" id="page-wrapper">
+        <div class="page-wrapper">
+
             <div class="topnav-wrapper">
                 <div id="backdrop"></div>
                 <div class="topnav ">
@@ -26,18 +27,34 @@
                     <button class="nav-item2" id="nav-item2"><a id="nav-item2-a" style="text-decoration: none;">註冊/登入</a></button>
                 </div>
             </div>
-            <div id="booking-greeting" style="text-align: center; margin-top: 25px; padding: 0;">行程預定成功</div>
-            <div id="booking-greeting" style="text-align: center; margin-top: 15px; padding: 0;">您的訂單資料如下:</div>
-            <div style="margin:35px 0 10px; font-size: 19px; font-weight: 400; text-align: center;">訂單編號 : <span id="order-no" style="margin-left:5px; font-weight: 400;"></span></div>
-            <div style="margin: 15px 0 10px; font-size: 16px; font-weight: 400; text-align: center;">請記住此編號，或到會員中心查詢歷史訂單</div>
+
+            <div class="member-content" style="margin-left: 20px;">
+                <div style="color: #448899;font-size: 22px; font-weight: 400; margin: 10px 0 5px;">會員資料</div>
+                <div id="member-info">
+                    <div>會員名稱 : <span id="member-name"></span></div>
+                    <div>會員信箱 : <span id="member-email"></span></div>
+                    <button id="logout-btn" onclick="logout();">登出系統</button>
+                </div>
+
+                <div id="orders">
+                    <div style="color: #448899;font-size: 22px; font-weight: 400; margin: 10px 0 10px;">歷史訂單資料</div>
+                </div>
+
+            </div>
+
         </div>
-        <footer class="booking-footer" id="booking-footer" style="height: 100vh; position: relative;">COPYRIGHT © 2021 台北一日遊</footer>
+        <footer class="footer">COPYRIGHT © 2021 台北一日遊</footer>
     </div>
     <script type="text/javascript" src="../static/script/member.js"></script>
-    <script type="text/javascript" src="../static/script/thankyou.js"></script>
     <script type="text/javascript">
+        // window.addEventListener("DOMContentLoaded", loggedIn);
+        // 另建一個新db connection或改成用connection pool，解決onload無法同時觸發多個function(串接API)問題
         window.onload = () => {
-            thankyou();
             loggedIn();
+            showOrders()
         };
     </script>
+
+</body>
+
+</html>

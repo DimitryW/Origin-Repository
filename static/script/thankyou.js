@@ -1,10 +1,12 @@
+const thankySrc = "http://3.230.236.135:3000";
+// const thankySrc = "http://127.0.0.1:3000";
+
 async function thankyou() {
     let urlParam = new URLSearchParams(window.location.search)
     let order_no = urlParam.get("number")
 
     if (order_no) {
-        let res = await fetch("http://3.230.236.135:3000/api/order/" + order_no);
-        // let res = await fetch("http://127.0.0.1:3000/api/order/" + order_no);
+        let res = await fetch(thankySrc + "/api/order/" + order_no);
         let data = await res.json();
         let number = data["data"]["number"];
         // let date = data["data"]["trip"]["date"];
@@ -23,8 +25,7 @@ async function thankyou() {
         // document.getElementById("book-email").innerHTML = email;
         // document.getElementById("book-phone").innerHTML = phone;
     } else {
-        location.href = "http://3.230.236.135:3000/";
-        // location.href = "http://127.0.0.1:3000/";
+        location.href = thankySrc;
     }
 
 }

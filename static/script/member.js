@@ -1,6 +1,6 @@
 const loginButton = document.getElementById("nav-item2");
-let memberSrc = "http://3.230.236.135:3000/api/user";
-// let memberSrc = "http://127.0.0.1:3000/api/user";
+let memberSrc = "http://3.230.236.135:3000";
+// let memberSrc = "http://127.0.0.1:3000";
 let headers = {
     "Content-type": "application/json"
 };
@@ -151,7 +151,7 @@ const signupWindow = () => {
 
 // 檢查會員登入狀況
 const loggedIn = () => {
-    fetch(memberSrc, {
+    fetch(memberSrc + "/api/user", {
             method: "GET",
             headers: headers
         })
@@ -162,13 +162,14 @@ const loggedIn = () => {
             if (result["data"]) {
                 membername = result["data"]["name"];
                 console.log(membername);
-                loginButton.innerHTML = "登出系統";
+                // loginButton.innerHTML = "登出系統";
+                document.getElementById("nav-item2-a").innerHTML = "會員專區";
                 loginButton.removeEventListener("click", signinWindow);
-                loginButton.addEventListener("click", logout);
+                // loginButton.addEventListener("click", logout);
+                document.getElementById("nav-item2-a").setAttribute("href", memberSrc + "/member");
                 console.log("already logged in.")
                 document.getElementById("nav-item1").removeEventListener("click", signinWindow);
-                // document.getElementById("nav-item1-a").setAttribute("href", "http://127.0.0.1:3000/booking");
-                document.getElementById("nav-item1-a").setAttribute("href", "http://3.230.236.135:3000/booking");
+                document.getElementById("nav-item1-a").setAttribute("href", memberSrc + "/booking");
             } else {
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
             }
@@ -184,7 +185,7 @@ const signin = () => {
         "email": email,
         "password": password
     };
-    fetch(memberSrc, {
+    fetch(memberSrc + "/api/user", {
             method: "PATCH",
             headers: headers,
             body: JSON.stringify(body)
@@ -212,7 +213,7 @@ const signup = () => {
     let emailRegex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
     // let pwRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_ `\-={}:";'<>?,.\/]).{3,18}$/;
     if (name === "" || email === "" || password === "") {
-        document.getElementById("signup-message").innerHTML = "欄位不可為空，請輸入!";
+        document.getElementById("signup-message").innerHTML = "欄位不可為空，請輸入資料!";
         return;
     }
     if (!nameRegex.test(name)) {
@@ -233,7 +234,7 @@ const signup = () => {
         "email": email,
         "password": password
     };
-    fetch(memberSrc, {
+    fetch(memberSrc + "/api/user", {
             method: "POST",
             headers: headers,
             body: JSON.stringify(body)
@@ -253,7 +254,7 @@ const signup = () => {
 
 // 會員登出功能
 const logout = () => {
-    fetch(memberSrc, {
+    fetch(memberSrc + "/api/user", {
             method: "DELETE",
             headers: headers
         })
@@ -266,15 +267,114 @@ const logout = () => {
                 loginButton.removeEventListener("click", logout);
                 loginButton.addEventListener("click", signinWindow);
                 document.getElementById("nav-item1-a").removeAttribute("href"); // 移除預定行程按鈕連結
+                document.getElementById("nav-item2").removeAttribute("href");
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
             }
-            if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou') {
-                location.href = "http://3.230.236.135:3000";
-                // location.href = "http://127.0.0.1:3000";
+            if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou' | window.location.pathname === '/member') {
+                location.href = memberSrc;
             }
             console.log("logged out!")
         })
 }
+
+
+async function showOrders() {
+    let res = await fetch(memberSrc + "/api/member_orders");
+    let data = await res.json();
+    document.getElementById("member-name").innerHTML = data["member_name"] !== null ? data["member_name"] : "";
+    document.getElementById("member-email").innerHTML = data["member_email"] !== null ? data["member_email"] : "";
+    if (data["data"].length !== 0) {
+        for (let i = data["data"].length - 1; i >= 0; i--) {
+            let orderInfo = document.createElement("div");
+            let orderTable = document.createElement("table");
+            let btn = document.createElement("button");
+            let img = document.createElement("img");
+            btn.setAttribute("data-id", data["data"][i]["order_number"]);
+            btn.id = "order-detail-btn";
+            btn.textContent = "詳細訂單資料";
+            img.id = "plus-btn-img"
+            img.src = "../static/photos/plus.jpg";
+
+            let tableHeader = orderTable.insertRow(0);
+            tableHeader.id = "table-header";
+            let th0 = tableHeader.insertCell(0);
+            let th1 = tableHeader.insertCell(1);
+            let th2 = tableHeader.insertCell(2);
+            let th3 = tableHeader.insertCell(3);
+            th0.style.width = "40%";
+            th1.style.width = "25%";
+            th2.style.width = "20%";
+            th3.style.width = "15%";
+            th0.innerHTML = "訂單編號";
+            th1.innerHTML = "下訂日期";
+            th2.innerHTML = "金額";
+            th3.innerHTML = "付款狀態"
+            let tableRow = orderTable.insertRow(1);
+            let cell0 = tableRow.insertCell(0);
+            let cell1 = tableRow.insertCell(1);
+            let cell2 = tableRow.insertCell(2);
+            let cell3 = tableRow.insertCell(3);
+            cell0.innerHTML = data["data"][i]["order_number"];
+            cell1.innerHTML = data["data"][i]["order_place_date"];
+            cell2.innerHTML = String(data["data"][i]["price"]) + " 元";
+            cell3.innerHTML = data["data"][i]["payment"] === "paid" ? "已付款" : "未付款";
+
+            orderInfo.id = "order-info";
+            let elem = [orderTable, img, btn]
+            elem.forEach(div => { orderInfo.appendChild(div); });
+            document.getElementById("orders").appendChild(orderInfo);
+
+            let hiddenDiv = document.createElement("div");
+            hiddenDiv.id = "hidden-detail";
+            hiddenDiv.style.height = "0";
+            hiddenDiv.classList.add("close");
+            let attraction = document.createElement("div");
+            let date = document.createElement("div");
+            let time = document.createElement("div");
+            let contactName = document.createElement("div");
+            let contactNumber = document.createElement("div");
+            date.id = "order-info-date";
+            attraction.textContent = "景點 : " + data["data"][i]["attraction"];
+            date.textContent = "出發日期 : " + data["data"][i]["date"];
+            time.textContent = "時段 : " + data["data"][i]["time"];
+            contactName.textContent = "聯絡人 : " + data["data"][i]["contact_name"];
+            contactNumber.textContent = "連絡電話 : " + data["data"][i]["contact_phone"];
+            let divs = [attraction, date, time, contactName, contactNumber];
+            divs.forEach(div => { hiddenDiv.appendChild(div); });
+            document.getElementById("orders").appendChild(hiddenDiv);
+
+            btn.onclick = () => {
+                if (hiddenDiv.classList.contains("close")) {
+                    hiddenDiv.classList.remove("close");
+                    hiddenDiv.style.height = "161px";
+                    img.src = "../static/photos/minus.jpg"
+                } else {
+                    hiddenDiv.classList.add("close");
+                    hiddenDiv.style.height = "0";
+                    img.src = "../static/photos/plus.jpg";
+                }
+            }
+            img.onclick = () => {
+                if (hiddenDiv.classList.contains("close")) {
+                    hiddenDiv.classList.remove("close");
+                    hiddenDiv.style.height = "161px";
+                    img.src = "../static/photos/minus.jpg"
+                } else {
+                    hiddenDiv.classList.add("close");
+                    hiddenDiv.style.height = "0";
+                    img.src = "../static/photos/plus.jpg";
+                }
+            }
+        }
+    } else {
+        let orderResult = document.createElement("div");
+        orderResult.textContent = "目前沒有訂單資料";
+        document.getElementById("orders").appendChild(orderResult);
+    }
+}
+
+
+
 
 
 loginButton.addEventListener("click", signinWindow);

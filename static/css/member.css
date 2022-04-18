@@ -1,0 +1,166 @@
+.member-content {
+    padding: 0 50px 0;
+    margin: 0 0 50px;
+}
+
+#orders {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+#member-info {
+    border-bottom: 1px solid #E8E8E8;
+    padding: 0 0px 50px;
+}
+
+#hidden-detail>div,
+#member-info>div {
+    margin: 5px 0 5px;
+}
+
+#order-detail-wrap {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: center;
+}
+
+#order-detail {
+    height: 320px;
+    display: none;
+    z-index: 101;
+    border-radius: 6px;
+    background: white;
+    margin: 100px 10px 10px;
+}
+
+#order-detail>div {
+    margin: 10px 20px 10px;
+    font-weight: 700;
+}
+
+#order-detail>div>span {
+    font-weight: 400;
+}
+
+#order-detail-close-icon {
+    position: relative;
+    float: right;
+    margin: 25px 10px 10px;
+    z-index: 102;
+    background-color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+}
+
+#logout-btn {
+    font-weight: bold;
+    width: 130px;
+    height: 30px;
+    font-size: 16px;
+    background: #FFFFFF;
+    color: #448899;
+    border-radius: 5px;
+    border: 1px solid #448899;
+    cursor: pointer;
+    margin: 10px 0 10px;
+}
+
+#logout-btn:hover {
+    background-color: #448899;
+    color: #FFFFFF;
+}
+
+#order-detail-btn {
+    font-weight: bold;
+    width: 110px;
+    height: 30px;
+    font-size: 16px;
+    background: #FFFFFF;
+    color: #448899;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0 10px;
+}
+
+
+/* #plus-btn {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #448899;
+    background: #FFFFFF;
+    cursor: pointer;
+} */
+
+#plus-btn-img {
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+}
+
+table,
+th,
+td {
+    border: 1px solid #b8b8b8;
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0 0;
+}
+
+#table-header {
+    font-weight: 400;
+    background: #448899;
+    color: #FFFFFF;
+}
+
+#hidden-detail {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E8E8E8;
+    overflow: hidden;
+    transition: height 300ms;
+    height: 0;
+}
+
+@media screen and (min-width:1200px) {
+    .member-content {
+        width: 1200px;
+        justify-self: center;
+    }
+    #order-detail {
+        width: 600px;
+    }
+}
+
+@media screen and (max-width:1200px) {
+    #order-detail {
+        width: 600px;
+    }
+}
+
+@media screen and (max-width:650px) {
+    .nav-title {
+        margin-left: 0;
+    }
+    #order-detail {
+        width: 100%;
+    }
+    #logout-btn,
+    #order-detail-btn {
+        float: none;
+        margin: 10px 0 10px;
+    }
+    .member-content,
+    #member-info,
+    #order-info {
+        padding: 0;
+    }
+}

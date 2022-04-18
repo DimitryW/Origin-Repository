@@ -1,11 +1,22 @@
+from email.policy import default
 from flask import *
 import jwt
 import time
 from model.model import AttractionDB, PhotosDB, MemberDB, OrdersDB
-from config import jwt_key
 import requests
 import json
 import datetime
+from dotenv import load_dotenv
+import os
+import re
+
+load_dotenv()
+jwt_key = os.getenv("jwt_key")
+partner_key = os.getenv("partner_key")
+merchant_id = os.getenv("merchant_id")
+tappay_details = os.getenv("tappay_details")
+x_api_key = os.getenv("x_api_key")
+
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -28,6 +39,10 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
     return render_template("thankyou.html")
+
+@app.route("/member")
+def member():
+    return render_template("member.html")
 
 
 @app.route("/api/attractions")
@@ -143,7 +158,18 @@ def user():
         name = request_data["name"]
         email = request_data["email"]
         password = request_data["password"]
-        member_count = MemberDB.count_member(email)
+        re_name = "^([\u4e00-\u9fa5]{2,20}|[a-zA-Z.\s]{2,20})$"
+        re_email = "^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$"
+
+        if (re.search(re_name, name)!=None) & (re.search(re_email, email)!=None):
+            member_count = MemberDB.count_member(email)
+        else:
+            signup_api = {
+                "error": True,
+                "message": "註冊失敗，輸入格式錯誤。"
+            }
+            return jsonify(signup_api), 400
+
         if member_count == 0:
             MemberDB.create_member(name, email, password)
             signup_api = {
@@ -301,15 +327,28 @@ def receive_order():
             phone = order_data["order"]["contact"]["phone"]
             member_id = MemberDB.search_member(member_email)[0]
             attract_id = order_data["order"]["trip"]["attraction"]["id"]
+            attract_name = order_data["order"]["trip"]["attraction"]["name"]
             date = order_data["order"]["trip"]["date"]
-            order_no = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-            OrdersDB.create_order(member_id, attract_id, date, amount, name, email, phone, order_no)
+            order_no = str(member_id) + "-" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+            re_name = "^([\u4e00-\u9fa5]{2,20}|[a-zA-Z.\s]{2,20})$"
+            re_email = "^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$"
+            re_phone = "^09[0-9]{8}$"
+            if (re.search(re_name, name)!=None) & (re.search(re_email, email)!=None) & (re.search(re_phone, phone)!=None):
+                OrdersDB.create_order(member_id, attract_id, attract_name, date, amount, name, email, phone, order_no)
+            else:
+                order_response = {
+                    "error": True,
+                    "message": "訂單建立失敗，輸入格式錯誤。"
+                    }
+                return jsonify(order_response), 400
+
             url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
             myobj = {
                 "prime": prime,
-                "partner_key": "partner_hg8xzwvT9v3YB4zGiU3q2WXx7uYKT4CqysbBWChvTvCw3F8D1DtqzCmr",
-                "merchant_id": 'grayfen_TAISHIN',
-                "details": "TapPay Test",
+                "partner_key": partner_key,
+                "merchant_id": merchant_id,
+                "details": tappay_details,
                 "amount": amount,
                 "cardholder": {
                     "phone_number": phone,
@@ -320,11 +359,10 @@ def receive_order():
             }
             header = {
                 "Content-Type": "application/json",
-                "x-api-key": "partner_hg8xzwvT9v3YB4zGiU3q2WXx7uYKT4CqysbBWChvTvCw3F8D1DtqzCmr"}
+                "x-api-key": x_api_key}
             response = requests.post(url, json=myobj, headers=header)
             tappay_response = json.loads(response.text)
-            print("\n")
-            print(tappay_response)
+
             if tappay_response["status"]==0:
                 OrdersDB.pay_order(order_no)
                 order_response = {
@@ -368,21 +406,21 @@ def check_order(order_no):
                 "number": order_no,
                 "price": price,
                 "trip": {
-                "attraction": {
-                    "id": attract_id,
-                    "name": site_name,
-                    "address": address,
-                    "image": img
-                },
-                "date": date,
-                "time": "morning" if price==2000 else "afternoon"
-                },
+                    "attraction": {
+                        "id": attract_id,
+                        "name": site_name,
+                        "address": address,
+                        "image": img
+                        },
+                    "date": date,
+                    "time": "morning" if price==2000 else "afternoon"
+                    },
                 "contact": {
-                "name": name,
-                "email": email,
-                "phone": phone
-                },
-                "status": 1 if payment=="paid" else 0
+                    "name": name,
+                    "email": email,
+                    "phone": phone
+                    },
+                "status": 0 if payment=="paid" else 1
             }
             }
         return jsonify(res), 200
@@ -391,6 +429,45 @@ def check_order(order_no):
         "message": "未登入系統，拒絕存取"
         }
     return jsonify(res), 403
+
+@app.route("/api/member_orders", methods=["GET"])
+def member_order():
+    user_token = request.cookies.get("wehelp_user")
+    if user_token:
+        decoded_jwt = jwt.decode(user_token, jwt_key, algorithms=["HS256"])
+        email = decoded_jwt["email"]
+        member_data = MemberDB.search_member(email)
+        result = OrdersDB.check_order_by_member(member_data[0])
+        member_orders ={
+                "member_id": member_data[0],
+                "member_name": member_data[1],
+                "member_email": email,
+                "data": []
+                }
+        for i in range(len(result)):
+            date = result[i][0].split("-")[-2]
+            order_info = {
+                "order_number": result[i][0],
+                "price": result[i][1],
+                "payment": result[i][8],
+                "attraction_id": result[i][2],
+                "attraction": result[i][3],
+                "date": result[i][4],
+                "time": "早上9點到中午12點" if result[i][1]==2000 else "下午1點到下午5點",
+                "contact_name": result[i][5],
+                "contact_email": result[i][6],
+                "contact_phone": result[i][7],
+                "order_place_date": date[0:4] + "-" + date[4:6] + "-" + date[6:8]
+            }
+            member_orders["data"].append(order_info)
+        return jsonify(member_orders), 200
+        
+    else:
+        member_response = {
+                "error": True,
+                "message": "未登入系統，拒絕存取"
+                }
+        return jsonify(member_response), 403
 
 
 
