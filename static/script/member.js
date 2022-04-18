@@ -301,10 +301,10 @@ async function showOrders() {
             let th1 = tableHeader.insertCell(1);
             let th2 = tableHeader.insertCell(2);
             let th3 = tableHeader.insertCell(3);
-            th0.style.width = "40%";
-            th1.style.width = "25%";
+            th0.style.width = "38%";
+            th1.style.width = "23%";
             th2.style.width = "20%";
-            th3.style.width = "15%";
+            th3.style.width = "19%";
             th0.innerHTML = "訂單編號";
             th1.innerHTML = "下訂日期";
             th2.innerHTML = "金額";
