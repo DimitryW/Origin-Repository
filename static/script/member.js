@@ -1,6 +1,6 @@
 const loginButton = document.getElementById("nav-item2");
-let memberSrc = "http://3.230.236.135:3000";
-// let memberSrc = "http://127.0.0.1:3000";
+// let memberSrc = "http://3.230.236.135:3000";
+let memberSrc = "http://127.0.0.1:3000";
 let headers = {
     "Content-type": "application/json"
 };
@@ -35,7 +35,14 @@ const signinWindow = () => {
     inputPass.setAttribute("type", "password");
     inputPass.setAttribute("placeholder", "輸入密碼");
     buttonWrap.setAttribute("id", "buttonWrap");
-    button1.setAttribute("id", "signin-button")
+    button1.setAttribute("id", "signin-button");
+    [inputEmail, inputPass].forEach((elem) => {
+        elem.addEventListener("keyup", (e) => {
+            if (e.key === "Enter") {
+                button1.click();
+            }
+        })
+    })
     button2.setAttribute("id", "switch-button")
     msg.setAttribute("id", "signin-message")
     let text1 = document.createTextNode("登入會員帳號");
@@ -109,6 +116,13 @@ const signupWindow = () => {
     inputPass.setAttribute("placeholder", "輸入密碼");
     buttonWrap.setAttribute("id", "buttonWrap");
     button1.setAttribute("id", "signin-button");
+    [inputName, inputEmail, inputPass].forEach((elem) => {
+        elem.addEventListener("keyup", (e) => {
+            if (e.key === "Enter") {
+                button1.click();
+            }
+        })
+    })
     button2.setAttribute("id", "switch-button");
     msg.setAttribute("id", "signup-message")
     let text1 = document.createTextNode("註冊會員帳號");
@@ -172,6 +186,9 @@ const loggedIn = () => {
                 document.getElementById("nav-item1-a").setAttribute("href", memberSrc + "/booking");
             } else {
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
+                if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou' | window.location.pathname === '/member') {
+                    location.href = memberSrc;
+                }
             }
         })
 }
@@ -212,7 +229,7 @@ const signup = () => {
     let nameRegex = /^([\u4e00-\u9fa5]{2,20}|[a-zA-Z.\s]{2,20})$/;
     let emailRegex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
     // let pwRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_ `\-={}:";'<>?,.\/]).{3,18}$/;
-    if (name === "" || email === "" || password === "") {
+    if (name === "" | email === "" | password === "") {
         document.getElementById("signup-message").innerHTML = "欄位不可為空，請輸入資料!";
         return;
     }
@@ -278,11 +295,15 @@ const logout = () => {
 }
 
 
+
+
+// 列出歷史訂單
 async function showOrders() {
     let res = await fetch(memberSrc + "/api/member_orders");
     let data = await res.json();
     document.getElementById("member-name").innerHTML = data["member_name"] !== null ? data["member_name"] : "";
     document.getElementById("member-email").innerHTML = data["member_email"] !== null ? data["member_email"] : "";
+    // document.getElementById("member-email-1").innerHTML = data["member_email"] !== null ? data["member_email"] : "";
     if (data["data"].length !== 0) {
         for (let i = data["data"].length - 1; i >= 0; i--) {
             let orderInfo = document.createElement("div");
@@ -373,7 +394,41 @@ async function showOrders() {
     }
 }
 
+const changePw = async() => {
+    let email = document.getElementById("member-email").textContent;
+    let oldPw = document.getElementById("old-pw").value;
+    let newPw = document.getElementById("new-pw").value;
+    let confirmPw = document.getElementById("confirm-pw").value;
+    if (email === "" | oldPw === "" | newPw === "") {
+        document.getElementById("pwUpdateMsg").style.display = "block";
+        document.getElementById("pwUpdateMsg").style.color = "red";
+        document.getElementById("pwUpdateMsg").innerHTML = "欄位不可為空，請輸入資料!";
+        return;
+    }
+    let body = {
+        "email": email,
+        "old_pw": oldPw,
+        "new_pw": newPw,
+        "confirm_pw": confirmPw
+    }
+    let res = await fetch(memberSrc + "/api/member_pw", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body)
+    });
+    let data = await res.json();
+    if (res.status === 400) {
+        document.getElementById("pwUpdateMsg").style.display = "block";
+        document.getElementById("pwUpdateMsg").style.color = "red";
+        document.getElementById("pwUpdateMsg").innerHTML = data["message"];
+    }
+    if (data["ok"]) {
+        document.getElementById("pwUpdateMsg").style.color = "blue";
+        document.getElementById("pwUpdateMsg").style.display = "block";
+        document.getElementById("pwUpdateMsg").innerHTML = "更新密碼成功";
+    }
 
+}
 
 
 

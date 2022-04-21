@@ -16,13 +16,13 @@ body {
     top: 0;
     background-color: #FFFFFF;
     justify-content: center;
+    border-bottom: 1px solid #E8E8E8;
 }
 
 .topnav {
     display: grid;
     height: 54px;
     grid-template-columns: 1fr 76px 88px;
-    background-color: #FFFFFF;
 }
 
 
@@ -190,6 +190,7 @@ body {
     color: #666666;
     border-radius: 5px;
     border: 1px solid #CCCCCC;
+    outline: 0;
 }
 
 #signin-button {
@@ -325,13 +326,14 @@ body {
 #keyword {
     font-family: 'Noto Sans TC';
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 16px;
     color: #757575;
     padding-left: 15px;
     border: none;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    outline: 0;
 }
 
 

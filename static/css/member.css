@@ -1,6 +1,5 @@
 .member-content {
     padding: 0 50px 0;
-    margin: 0 0 50px;
 }
 
 #orders {
@@ -10,7 +9,17 @@
 
 #member-info {
     border-bottom: 1px solid #E8E8E8;
-    padding: 0 0px 50px;
+    margin: 0 0 10px;
+}
+
+#amend-member>input {
+    margin: 8px 0 8px;
+    border-radius: 3px;
+    width: 150px;
+    padding-left: 5px;
+    border: 1px solid #b8b8b8;
+    outline: 0;
+    height: 23px;
 }
 
 #hidden-detail>div,
@@ -57,7 +66,7 @@
     cursor: pointer;
 }
 
-#logout-btn {
+#confiem-change-pw {
     font-weight: bold;
     width: 130px;
     height: 30px;
@@ -70,6 +79,22 @@
     margin: 10px 0 10px;
 }
 
+#logout-btn {
+    font-weight: bold;
+    width: 130px;
+    height: 30px;
+    font-size: 16px;
+    background: #FFFFFF;
+    color: #448899;
+    border-radius: 5px;
+    border: 1px solid #448899;
+    cursor: pointer;
+    margin: 10px 0 10px;
+    margin: 10px 0 0;
+    float: right;
+}
+
+#confiem-change-pw:hover,
 #logout-btn:hover {
     background-color: #448899;
     color: #FFFFFF;
@@ -96,10 +121,21 @@
     cursor: pointer;
 } */
 
+#change-pw {
+    display: inline-block;
+    color: #448899;
+    cursor: pointer;
+}
+
+#change-pw-img,
 #plus-btn-img {
     width: 12px;
     height: 12px;
     cursor: pointer;
+}
+
+#change-pw-img {
+    transition: 300ms;
 }
 
 table,
@@ -121,9 +157,14 @@ table {
     color: #FFFFFF;
 }
 
+#amend-member-wrap {
+    overflow: hidden;
+    height: 0;
+    transition: height 300ms;
+}
+
 #hidden-detail {
     margin-bottom: 20px;
-    padding-bottom: 10px;
     border-bottom: 1px solid #E8E8E8;
     overflow: hidden;
     transition: height 300ms;
@@ -153,7 +194,6 @@ table {
     #order-detail {
         width: 100%;
     }
-    #logout-btn,
     #order-detail-btn {
         float: none;
         margin: 10px 0 10px;

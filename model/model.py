@@ -104,6 +104,18 @@ class MemberDB:
         mycursor.close()
         cnx1.close()
         return data
+    @staticmethod
+    def update_member_pw(email, old_pw, new_pw):
+        print("MODEL HERE 0")
+        cnx = cnxpool.get_connection()
+        cursor = cnx.cursor()
+        sql = "UPDATE members SET password=%s WHERE email=%s AND password=%s"
+        val = (new_pw, email, old_pw)
+        cursor.execute(sql, val)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        return
 
 class OrdersDB:
     @staticmethod

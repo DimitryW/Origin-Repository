@@ -29,12 +29,30 @@
             </div>
 
             <div class="member-content" style="margin-left: 20px;">
-                <div style="color: #448899;font-size: 22px; font-weight: 400; margin: 10px 0 5px;">會員資料</div>
+                <div style="display: inline-block; color: #448899;font-size: 22px; font-weight: 400; margin: 10px 0 5px;">會員資料</div>
+                <button id="logout-btn" onclick="logout();">登出系統</button>
                 <div id="member-info">
                     <div>會員名稱 : <span id="member-name"></span></div>
                     <div>會員信箱 : <span id="member-email"></span></div>
-                    <button id="logout-btn" onclick="logout();">登出系統</button>
+                    <img id="change-pw-img" onclick="toUpdatePassword();" src="../static/photos/vector-arrow.png">
+                    <div id="change-pw" onclick="toUpdatePassword();">更改密碼</div>
+                    <div id="amend-member-wrap" class="close">
+                        <div id="amend-member">
+                            <!-- <label for="member-name">會員名稱 : </label>
+                            <input id="member-name"><br>
+                            <div>會員信箱 : <span id="member-email-1"></span></div> -->
+                            <label for="old-pw">輸入原始密碼 : </label>
+                            <input id="old-pw" type="password"><br>
+                            <label for="new-pw">輸入新密碼 : </label>
+                            <input id="new-pw" type="password"><br>
+                            <label for="confirm-pw">確認新密碼 : </label>
+                            <input id="confirm-pw" type="password"><br>
+                            <button id="confiem-change-pw" onclick="changePw();">確認更改</button>
+                            <div id="pwUpdateMsg" style="color: blue; display: none;"></div>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div id="orders">
                     <div style="color: #448899;font-size: 22px; font-weight: 400; margin: 10px 0 10px;">歷史訂單資料</div>
@@ -53,6 +71,22 @@
             loggedIn();
             showOrders()
         };
+        const toUpdatePassword = () => {
+            let pwSection = document.getElementById("amend-member-wrap");
+            if (pwSection.classList.contains("close")) {
+                pwSection.classList.remove("close");
+                pwSection.style.height = "195px";
+                document.getElementById("change-pw-img").style.transform = "rotate(-180deg)";
+            } else {
+                pwSection.classList.add("close");
+                pwSection.style.height = 0;
+                document.getElementById("old-pw").value = "";
+                document.getElementById("new-pw").value = "";
+                document.getElementById("confirm-pw").value = "";
+                document.getElementById("pwUpdateMsg").style.display = "none";
+                document.getElementById("change-pw-img").style.transform = "none";
+            }
+        }
     </script>
 
 </body>

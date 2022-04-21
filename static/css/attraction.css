@@ -221,6 +221,7 @@ body {
     color: #666666;
     border-radius: 5px;
     border: 1px solid #CCCCCC;
+    outline: 0;
 }
 
 #signin-button {

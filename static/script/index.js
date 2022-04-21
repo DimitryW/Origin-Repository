@@ -1,7 +1,7 @@
 let page = 0;
 let keyword = "";
-// let indexSrc = "http://127.0.0.1:3000";
-let indexSrc = "http://3.230.236.135:3000";
+let indexSrc = "http://127.0.0.1:3000";
+// let indexSrc = "http://3.230.236.135:3000";
 
 
 
@@ -121,3 +121,10 @@ const searchKeyword = () => {
     keyword = document.getElementById("keyword").value;
     observer.observe(target);
 }
+
+const kw = document.getElementById("keyword");
+kw.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+        document.getElementById("search-btn").click();
+    }
+})

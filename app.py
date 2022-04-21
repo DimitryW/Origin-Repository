@@ -1,5 +1,5 @@
-from email.policy import default
 from flask import *
+from flask_cors import CORS
 import jwt
 import time
 from model.model import AttractionDB, PhotosDB, MemberDB, OrdersDB
@@ -22,6 +22,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False  # not to Sort the keys of JSON objects alphabetically
+CORS(app)
 
 
 @app.route("/")
@@ -468,12 +469,54 @@ def member_order():
                 "message": "未登入系統，拒絕存取"
                 }
         return jsonify(member_response), 403
-
-
+        
+@app.route("/api/member_pw", methods=["POST"])
+def member_pw():
+    pws = request.get_json() #email, old_pw, new_pw, confirm_pw
+    try:
+        old_member_data = MemberDB.check_member(pws["email"], pws["old_pw"])
+        if old_member_data == 1:
+            if pws["old_pw"]==pws["new_pw"]:
+                res = {
+                "error": True,
+                "message": "新舊密碼不可相同"
+                }
+                status = 400
+            elif (pws["old_pw"]!=pws["new_pw"]) & (pws["new_pw"]==pws["confirm_pw"]) & (pws["new_pw"]!=""):
+                MemberDB.update_member_pw(pws["email"], pws["old_pw"], pws["new_pw"])
+                res = {
+                "ok": True
+                }
+                status = 200
+            elif pws["new_pw"]!=pws["confirm_pw"]:
+                res = {
+                "error": True,
+                "message": "新密碼不相同"
+                }
+                status = 400
+            elif pws["new_pw"]=="":
+                res = {
+                "error": True,
+                "message": "請輸入新密碼"
+                }
+                status = 400
+        else:
+            res = {
+                "error": True,
+                "message": "密碼輸入錯誤"
+                }
+            status = 400
+    except:
+        res = {
+            "error": True,
+            "message": "伺服器內部錯誤"
+            }
+        status = 500
+    return jsonify(res), status
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=3000)
-    # app.debug = True
-    # app.run(port=3000)
+    # app.run(host='0.0.0.0', port=3000)
+    app.debug = True
+    app.run(port=3000)
 
 
