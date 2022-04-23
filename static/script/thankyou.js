@@ -1,5 +1,5 @@
-// const thankySrc = "http://3.230.236.135:3000";
-const thankySrc = "http://127.0.0.1:3000";
+const thankySrc = "http://3.230.236.135:3000";
+// const thankySrc = "http://127.0.0.1:3000";
 
 async function thankyou() {
     let urlParam = new URLSearchParams(window.location.search)
