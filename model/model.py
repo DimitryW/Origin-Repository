@@ -130,11 +130,14 @@ class OrdersDB:
         cnx1.close()
         return
     @staticmethod
-    def pay_order(order_no):
+    def pay_order(order_no, status):
         cnx1 = cnxpool.get_connection()
         cursor = cnx1.cursor()
         cursor.execute("UPDATE orders SET payment='paid' Where order_no = %s", (order_no,))
-        cnx1.commit()
+        if status==0:
+            cnx1.commit()
+        else:
+            cnx1.rollback()
         cursor.close()
         cnx1.close()
         return

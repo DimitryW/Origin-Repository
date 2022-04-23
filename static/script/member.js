@@ -181,9 +181,11 @@ const loggedIn = () => {
                 loginButton.removeEventListener("click", signinWindow);
                 // loginButton.addEventListener("click", logout);
                 document.getElementById("nav-item2-a").setAttribute("href", memberSrc + "/member");
+                document.getElementById("nav-item2-a").style.color = "#666666";
                 console.log("already logged in.")
                 document.getElementById("nav-item1").removeEventListener("click", signinWindow);
                 document.getElementById("nav-item1-a").setAttribute("href", memberSrc + "/booking");
+                document.getElementById("nav-item1-a").style.color = "#666666";
             } else {
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
                 if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou' | window.location.pathname === '/member') {

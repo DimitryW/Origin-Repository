@@ -365,7 +365,7 @@ def receive_order():
             tappay_response = json.loads(response.text)
 
             if tappay_response["status"]==0:
-                OrdersDB.pay_order(order_no)
+                OrdersDB.pay_order(order_no, tappay_response["status"])
                 order_response = {
                     "data": {
                         "number": order_no,
