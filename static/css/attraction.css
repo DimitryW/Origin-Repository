@@ -64,11 +64,14 @@ body {
     font-weight: 700;
     font-size: 30px;
     text-decoration: none;
+    cursor: pointer;
+    padding-left: 10px;
 }
 
-.nav-title:active {
+
+/* .nav-title:active {
     transform: translateY(2px);
-}
+} */
 
 
 /* navbar右邊兩排小字 */
@@ -83,9 +86,11 @@ body {
     color: #666666;
     border: none;
     background-color: #FFFFFF;
+    cursor: pointer;
 }
 
-#nav-item1-a:visited {
+#nav-item1-a:visited,
+#nav-item2-a:visited {
     color: #666666;
     ;
 }
@@ -102,18 +107,21 @@ body {
     border: none;
     margin-right: 10px;
     padding: 0;
+    cursor: pointer;
 }
 
-.nav-item1:hover,
+
+/* .nav-item1:hover,
 .nav-item2:hover {
     font-weight: 600;
-}
+} */
 
-.nav-item1:active,
+
+/* .nav-item1:active,
 .nav-item2:active {
     font-weight: 600;
     transform: translateY(2px);
-}
+} */
 
 #signup {
     position: absolute;
@@ -179,6 +187,7 @@ body {
     z-index: 101;
     background-color: #FFFFFF;
     border: none;
+    cursor: pointer;
 }
 
 #close-icon img {
@@ -189,9 +198,10 @@ body {
     right: 0px;
 }
 
-#close-icon:active {
+
+/* #close-icon:active {
     transform: translateY(2px);
-}
+} */
 
 #signin-form {
     display: grid;
@@ -211,6 +221,7 @@ body {
     color: #666666;
     border-radius: 5px;
     border: 1px solid #CCCCCC;
+    outline: 0;
 }
 
 #signin-button {
@@ -225,6 +236,7 @@ body {
     background: #448899;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 #signin-button:hover {
@@ -258,16 +270,19 @@ body {
     background: #FFFFFF;
     margin: 10px;
     margin-top: 0;
+    cursor: pointer;
 }
 
-#switch-button:hover {
+
+/* #switch-button:hover {
     font-weight: 600;
-}
+} */
 
-#switch-button:active {
+
+/* #switch-button:active {
     font-weight: 600;
     transform: translateY(2px);
-}
+} */
 
 #signup-form {
     display: grid;
@@ -294,6 +309,20 @@ body {
     /* align-items: center; */
     /* border-bottom-style: solid;
     border-color: #E8E8E8; */
+}
+
+#spinner {
+    background-image: url("../photos/spinner7.gif");
+    grid-area: img;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80px 80px;
+    width: 100%;
+    height: 100%;
+}
+
+.slide>img {
+    display: none;
 }
 
 .profile {
@@ -331,6 +360,7 @@ body {
     font-size: 19px;
     color: #FFFFFF;
     margin-bottom: 15px;
+    cursor: pointer;
 }
 
 #booking-button:hover {
@@ -340,6 +370,12 @@ body {
 
 #booking-button:active {
     transform: translateY(2px);
+}
+
+.data-switch-input-btn,
+.carousel-button,
+.timeInput {
+    cursor: pointer;
 }
 
 .timeInput:after {

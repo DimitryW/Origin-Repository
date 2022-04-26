@@ -1,7 +1,12 @@
 let page = 0;
 let keyword = "";
-// let src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
-let src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+// let indexSrc = "http://127.0.0.1:3000";
+let indexSrc = "http://3.230.236.135:3000";
+
+
+
+
+
 
 
 // 建立照片資料元素到網頁
@@ -14,6 +19,7 @@ const showData = (listN, listM, listC, listI, ListD) => {
         let divMrt = document.createElement("div");
         let divCat = document.createElement("div");
         let img = document.createElement("img");
+        let spinner = document.createElement("div");
         let nameText = document.createTextNode(listN[count]);
         let mrtText = document.createTextNode(listM[count]);
         let catText = document.createTextNode(listC[count]);
@@ -21,14 +27,21 @@ const showData = (listN, listM, listC, listI, ListD) => {
         divName.id = "name" + i;
         divMrt.id = "mrt" + i;
         divCat.id = "category" + i;
+        img.id = "attractionImg";
         img.src = listI[count];
-        // aBox.href = "http://127.0.0.1:3000/attraction/" + ListD[count];
-        aBox.href = "http://3.230.236.135:3000/attraction/" + ListD[count];
+        spinner.id = "spinner"
+            // img加上onload事件，當照片載入完成後觸發，讓spinner不再顯示
+        img.onload = () => {
+            img.style.display = "block";
+            spinner.style.display = "none";
+        }
+        aBox.href = indexSrc + "/attraction/" + ListD[count];
         divName.appendChild(nameText);
         divMrt.appendChild(mrtText);
         divCat.appendChild(catText);
         document.getElementsByClassName("content")[0].appendChild(aBox);
         document.getElementById("box" + i).appendChild(img);
+        document.getElementById("box" + i).appendChild(spinner);
         document.getElementById("box" + i).appendChild(divName);
         document.getElementById("box" + i).appendChild(divMrt);
         document.getElementById("box" + i).appendChild(divCat);
@@ -49,8 +62,7 @@ let callback = (entry) => {
         console.log("SCROLL CALLBACK OK")
 
         if (page != null) {
-            src = "http://3.230.236.135:3000/api/attractions?page=" + page + "&keyword=" + keyword;
-            // src = "http://127.0.0.1:3000/api/attractions?page=" + page + "&keyword=" + keyword;
+            src = indexSrc + "/api/attractions?page=" + page + "&keyword=" + keyword;
             let listName = [];
             let listMrt = [];
             let listCat = [];
@@ -76,7 +88,7 @@ let callback = (entry) => {
 
                         for (let i in result.data) {
                             let name = result.data[i].name;
-                            let mrt = result.data[i].mrt;
+                            let mrt = result.data[i].mrt !== null ? result.data[i].mrt : ""; // 如果沒有捷運站就空著，不然會跑出null
                             let cat = result.data[i].category;
                             let img = result.data[i].images[0]
                             let id = result.data[i].id;
@@ -109,3 +121,10 @@ const searchKeyword = () => {
     keyword = document.getElementById("keyword").value;
     observer.observe(target);
 }
+
+const kw = document.getElementById("keyword");
+kw.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+        document.getElementById("search-btn").click();
+    }
+})

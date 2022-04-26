@@ -68,15 +68,7 @@
     background-image: url("../photos/icon_delete.png");
     border: none;
     background-color: #FFFFFF;
-}
-
-#delete-booking:hover {
-    font-weight: 600;
-}
-
-#delete-booking:active {
-    font-weight: 600;
-    transform: translateY(2px);
+    cursor: pointer;
 }
 
 .confirmation {
@@ -111,6 +103,7 @@
     background: #448899;
     border-radius: 5px;
     margin: 25px 0 62px 0;
+    cursor: pointer;
 }
 
 #confirm-button:hover {

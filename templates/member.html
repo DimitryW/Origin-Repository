@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/attraction.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/member.css" />
+    <title>台北一日遊 會員專區</title>
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-wrapper">
+
+            <div class="topnav-wrapper">
+                <div id="backdrop"></div>
+                <div class="topnav ">
+                    <!-- <a class="nav-title" href="http://127.0.0.1:3000/">台北一日遊</a> -->
+                    <a class="nav-title" href="http://3.230.236.135:3000/">台北一日遊</a>
+                    <button class="nav-item1" id="nav-item1"><a id="nav-item1-a" style="text-decoration: none;">預定行程</a></button>
+                    <button class="nav-item2" id="nav-item2"><a id="nav-item2-a" style="text-decoration: none;">註冊/登入</a></button>
+                </div>
+            </div>
+
+            <div class="member-content" style="margin-left: 20px;">
+                <div style="display: inline-block; color: #448899;font-size: 22px; font-weight: 400; margin: 10px 0 5px;">會員資料</div>
+                <button id="logout-btn" onclick="logout();">登出系統</button>
+                <div id="member-info">
+                    <div>會員名稱 : <span id="member-name"></span></div>
+                    <div>會員信箱 : <span id="member-email"></span></div>
+                    <img id="change-pw-img" onclick="toUpdatePassword();" src="../static/photos/vector-arrow.png">
+                    <div id="change-pw" onclick="toUpdatePassword();">更改密碼</div>
+                    <div id="amend-member-wrap" class="close">
+                        <div id="amend-member">
+                            <!-- <label for="member-name">會員名稱 : </label>
+                            <input id="member-name"><br>
+                            <div>會員信箱 : <span id="member-email-1"></span></div> -->
+                            <label for="old-pw">輸入原始密碼 : </label>
+                            <input id="old-pw" type="password"><br>
+                            <label for="new-pw">輸入新密碼 : </label>
+                            <input id="new-pw" type="password"><br>
+                            <label for="confirm-pw">確認新密碼 : </label>
+                            <input id="confirm-pw" type="password"><br>
+                            <button id="confiem-change-pw" onclick="changePw();">確認更改</button>
+                            <div id="pwUpdateMsg" style="color: blue; display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="orders">
+                    <div style="color: #448899;font-size: 22px; font-weight: 400; margin: 10px 0 10px;">歷史訂單資料</div>
+                </div>
+
+            </div>
+
+        </div>
+        <footer class="footer">COPYRIGHT © 2021 台北一日遊</footer>
+    </div>
+    <script type="text/javascript" src="../static/script/member.js"></script>
+    <script type="text/javascript">
+        // window.addEventListener("DOMContentLoaded", loggedIn);
+        // 另建一個新db connection或改成用connection pool，解決onload無法同時觸發多個function(串接API)問題
+        window.onload = () => {
+            loggedIn();
+            showOrders()
+        };
+        const toUpdatePassword = () => {
+            let pwSection = document.getElementById("amend-member-wrap");
+            if (pwSection.classList.contains("close")) {
+                pwSection.classList.remove("close");
+                pwSection.style.height = "195px";
+                document.getElementById("change-pw-img").style.transform = "rotate(-180deg)";
+            } else {
+                pwSection.classList.add("close");
+                pwSection.style.height = 0;
+                document.getElementById("old-pw").value = "";
+                document.getElementById("new-pw").value = "";
+                document.getElementById("confirm-pw").value = "";
+                document.getElementById("pwUpdateMsg").style.display = "none";
+                document.getElementById("change-pw-img").style.transform = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -66,6 +66,15 @@ class MemberDB:
         cnx1.close()
         return member_data
     @staticmethod    
+    def search_member_by_id(member_id):
+        cnx1 = cnxpool.get_connection()
+        mycursor = cnx1.cursor()
+        mycursor.execute("SELECT id, name, email FROM members where id=%s", (member_id,))  
+        member_data = mycursor.fetchone()
+        mycursor.close()
+        cnx1.close()
+        return member_data
+    @staticmethod    
     def count_member(email):
         cnx1 = cnxpool.get_connection()
         mycursor = cnx1.cursor()
@@ -95,25 +104,40 @@ class MemberDB:
         mycursor.close()
         cnx1.close()
         return data
+    @staticmethod
+    def update_member_pw(email, old_pw, new_pw):
+        print("MODEL HERE 0")
+        cnx = cnxpool.get_connection()
+        cursor = cnx.cursor()
+        sql = "UPDATE members SET password=%s WHERE email=%s AND password=%s"
+        val = (new_pw, email, old_pw)
+        cursor.execute(sql, val)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        return
 
 class OrdersDB:
     @staticmethod
-    def create_order(member_id, attract_id, date, price, name, email, phone, order_no):
+    def create_order(member_id, attract_id, attract_name, date, price, name, email, phone, order_no):
         cnx1 = cnxpool.get_connection()
         cursor = cnx1.cursor()
-        sql = "INSERT INTO orders (member_id, attract_id, date, price, name, email, phone, order_no) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (member_id, attract_id, date, price, name, email, phone, order_no)
+        sql = "INSERT INTO orders (member_id, attract_id, attract_name, date, price, name, email, phone, order_no) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (member_id, attract_id, attract_name, date, price, name, email, phone, order_no)
         cursor.execute(sql, val)
         cnx1.commit()
         cursor.close()
         cnx1.close()
         return
     @staticmethod
-    def pay_order(order_no):
+    def pay_order(order_no, status):
         cnx1 = cnxpool.get_connection()
         cursor = cnx1.cursor()
         cursor.execute("UPDATE orders SET payment='paid' Where order_no = %s", (order_no,))
-        cnx1.commit()
+        if status==0:
+            cnx1.commit()
+        else:
+            cnx1.rollback()
         cursor.close()
         cnx1.close()
         return
@@ -127,4 +151,15 @@ class OrdersDB:
         cursor.close()
         cnx1.close()
         return result
+    def check_order_by_member(member_id, index=0, limit=1000):
+        cnx1 = cnxpool.get_connection()
+        cursor = cnx1.cursor()
+        sql = "SELECT order_no, price, attract_id, attract_name, date, name, email, phone, payment FROM orders WHERE member_id=%s LIMIT %s, %s"
+        cursor.execute(sql, (member_id, index, limit))
+        result = cursor.fetchall()
+        cursor.close()
+        cnx1.close()
+        return result
+
+
 

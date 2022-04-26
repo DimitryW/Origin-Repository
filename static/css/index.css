@@ -16,13 +16,13 @@ body {
     top: 0;
     background-color: #FFFFFF;
     justify-content: center;
+    border-bottom: 1px solid #E8E8E8;
 }
 
 .topnav {
     display: grid;
     height: 54px;
     grid-template-columns: 1fr 76px 88px;
-    background-color: #FFFFFF;
 }
 
 
@@ -36,6 +36,8 @@ body {
     margin-left: 10px;
     font-weight: 700;
     font-size: 30px;
+    cursor: pointer;
+    padding-left: 10px;
 }
 
 
@@ -51,9 +53,11 @@ body {
     color: #666666;
     border: none;
     background-color: #FFFFFF;
+    cursor: pointer;
 }
 
-#nav-item1-a:visited {
+#nav-item1-a:visited,
+#nav-item2-a:visited {
     color: #666666;
     ;
 }
@@ -71,18 +75,22 @@ body {
     border: none;
     margin-right: 10px;
     padding: 0;
+    cursor: pointer;
 }
 
+
+/* 
 .nav-item1:hover,
 .nav-item2:hover {
     font-weight: 600;
-}
+} */
 
-.nav-item1:active,
+
+/* .nav-item1:active,
 .nav-item2:active {
     font-weight: 600;
     transform: translateY(2px);
-}
+} */
 
 #backdrop {
     background: #000;
@@ -148,6 +156,7 @@ body {
     z-index: 101;
     background-color: #FFFFFF;
     border: none;
+    cursor: pointer;
 }
 
 #close-icon img {
@@ -158,9 +167,10 @@ body {
     right: 0px;
 }
 
-#close-icon:active {
+
+/* #close-icon:active {
     transform: translateY(2px);
-}
+} */
 
 #signin-form {
     display: grid;
@@ -180,6 +190,7 @@ body {
     color: #666666;
     border-radius: 5px;
     border: 1px solid #CCCCCC;
+    outline: 0;
 }
 
 #signin-button {
@@ -194,6 +205,7 @@ body {
     background: #448899;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 #signin-button:hover {
@@ -227,16 +239,19 @@ body {
     background: #FFFFFF;
     margin: 10px;
     margin-top: 0;
+    cursor: pointer;
 }
 
-#switch-button:hover {
+
+/* #switch-button:hover {
     font-weight: 600;
-}
+} */
 
-#switch-button:active {
+
+/* #switch-button:active {
     font-weight: 600;
     transform: translateY(2px);
-}
+} */
 
 #signup-form {
     display: grid;
@@ -311,13 +326,14 @@ body {
 #keyword {
     font-family: 'Noto Sans TC';
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 16px;
     color: #757575;
     padding-left: 15px;
     border: none;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    outline: 0;
 }
 
 
@@ -331,6 +347,7 @@ body {
     background-color: #448899;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    cursor: pointer;
 }
 
 
@@ -358,9 +375,9 @@ body {
     flex: none;
     float: left;
     display: grid;
-    grid-template-rows: 170px 30px 40px;
+    grid-template-rows: 170px 50px 30px;
     width: 270px;
-    height: 240px;
+    height: 250px;
     margin: 12px;
     border-radius: 5px;
     border: 1px solid #E8E8E8;
@@ -371,7 +388,7 @@ body {
 }
 
 [id^="box"]:hover {
-    transform: scale(1.03);
+    /* transform: scale(1.03); */
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.19), 0px 5px 5px 0px rgba(0, 0, 0, 0.19);
 }
 
@@ -382,13 +399,21 @@ body {
     object-fit: cover;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    display: block;
+    display: none;
+}
+
+#spinner {
+    background-image: url("../photos/spinner7.gif");
+    grid-area: img;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80px 80px;
 }
 
 [id^="name"] {
     grid-area: name;
-    height: 100%;
     text-align: left;
+    align-self: center;
     grid-area: name;
     font-size: 16px;
     font-weight: 700;
@@ -403,7 +428,7 @@ body {
     grid-area: mrt;
     font-weight: normal;
     font-size: 16px;
-    margin: 10px;
+    margin: 0 10px 10px;
     color: #757575;
 }
 
@@ -414,7 +439,7 @@ body {
     grid-area: category;
     font-weight: normal;
     font-size: 16px;
-    margin: 10px;
+    margin: 0 10px 10px;
     color: #757575;
 }
 

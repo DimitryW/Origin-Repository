@@ -22,8 +22,8 @@ inputFunc();
 // 取得景點ID並渲染頁面
 let path = window.location.pathname;
 let id = path.split("/")[2];
-// let src = "http://127.0.0.1:3000/api/attraction/" + id;
-let src = "http://3.230.236.135:3000/api/attraction/" + id;
+// let attractSrc = "http://127.0.0.1:3000";
+let attractSrc = "http://3.230.236.135:3000";
 
 const inputAttributes = {
     name: "switch-button",
@@ -38,7 +38,7 @@ function addAttributes(element, attributes) {
 }
 
 const loadAttraction = () => {
-    fetch(src)
+    fetch(attractSrc + "/api/attraction/" + id)
         .then((response) => {
             return response.json();
         })
@@ -57,11 +57,18 @@ const loadAttraction = () => {
                 let input = document.createElement("input");
                 let li = document.createElement("li");
                 let img = document.createElement("img");
+                let spinner = document.createElement("div");
                 addAttributes(input, inputAttributes);
                 li.setAttribute("class", "slide");
                 img.src = imgList[i];
+                spinner.id = "spinner";
+                img.onload = () => {
+                    img.style.display = "block";
+                    spinner.style.display = "none";
+                }
                 document.getElementsByClassName("data-switch-input")[0].appendChild(input);
                 li.appendChild(img);
+                li.appendChild(spinner);
                 document.getElementById("slide-list").appendChild(li);
             }
             document.getElementsByClassName("data-switch-input-btn")[0].checked = true;
