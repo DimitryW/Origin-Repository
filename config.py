@@ -8,7 +8,7 @@ db_pw = os.getenv("db_pw")
 
 
 dbconfig = {
-  "database": "wehelp2",
+  "database": "wehelp",
   "user": db_user,
   "password": db_pw,
   "auth_plugin":'mysql_native_password'
