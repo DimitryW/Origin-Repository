@@ -1,4 +1,4 @@
-const bookingSrc = "http://3.230.236.135:3000";
+const bookingSrc = "http://54.86.13.161:3000/";
 // const bookingSrc = "http://127.0.0.1:3000";
 const bookingHeaders = { "Content-type": "application/json" };
 
