@@ -1,4 +1,4 @@
-const thankySrc = "http://54.86.13.161:3000/";
+const thankySrc = "http://54.86.13.161:3000";
 // const thankySrc = "http://127.0.0.1:3000";
 
 async function thankyou() {
