@@ -154,7 +154,7 @@ async function send_order(prime) {
     let tappayRequestBody = {
         "prime": prime,
         "order": {
-            "price": document.getElementById("book-date").textContent === "新台幣 2000 元" ? 2000 : 2500,
+            "price": document.getElementById("book-charge").textContent === "新台幣 2000 元" ? 2000 : 2500,
             "trip": {
                 "attraction": {
                     "id": Number(document.getElementById("attractId").textContent),
