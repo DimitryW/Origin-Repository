@@ -165,7 +165,7 @@ const signupWindow = () => {
 
 // 檢查會員登入狀況
 const loggedIn = () => {
-    fetch(memberSrc + "/api/user", {
+    fetch("/api/user", {
             method: "GET",
             headers: headers
         })
@@ -180,16 +180,16 @@ const loggedIn = () => {
                 document.getElementById("nav-item2-a").innerHTML = "會員專區";
                 loginButton.removeEventListener("click", signinWindow);
                 // loginButton.addEventListener("click", logout);
-                document.getElementById("nav-item2-a").setAttribute("href", memberSrc + "/member");
+                document.getElementById("nav-item2-a").setAttribute("href", "/member");
                 document.getElementById("nav-item2-a").style.color = "#666666";
                 console.log("already logged in.")
                 document.getElementById("nav-item1").removeEventListener("click", signinWindow);
-                document.getElementById("nav-item1-a").setAttribute("href", memberSrc + "/booking");
+                document.getElementById("nav-item1-a").setAttribute("href", "/booking");
                 document.getElementById("nav-item1-a").style.color = "#666666";
             } else {
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
                 if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou' | window.location.pathname === '/member') {
-                    location.href = memberSrc;
+                    location.href = "/";
                 }
             }
         })
@@ -204,7 +204,7 @@ const signin = () => {
         "email": email,
         "password": password
     };
-    fetch(memberSrc + "/api/user", {
+    fetch("/api/user", {
             method: "PATCH",
             headers: headers,
             body: JSON.stringify(body)
@@ -253,7 +253,7 @@ const signup = () => {
         "email": email,
         "password": password
     };
-    fetch(memberSrc + "/api/user", {
+    fetch("/api/user", {
             method: "POST",
             headers: headers,
             body: JSON.stringify(body)
@@ -273,7 +273,7 @@ const signup = () => {
 
 // 會員登出功能
 const logout = () => {
-    fetch(memberSrc + "/api/user", {
+    fetch("/api/user", {
             method: "DELETE",
             headers: headers
         })
@@ -290,7 +290,7 @@ const logout = () => {
                 document.getElementById("nav-item1-a").addEventListener("click", signinWindow);
             }
             if (window.location.pathname === "/booking" | window.location.pathname === '/thankyou' | window.location.pathname === '/member') {
-                location.href = memberSrc;
+                location.href = "/";
             }
             console.log("logged out!")
         })
@@ -301,7 +301,7 @@ const logout = () => {
 
 // 列出歷史訂單
 async function showOrders() {
-    let res = await fetch(memberSrc + "/api/member_orders");
+    let res = await fetch("/api/member_orders");
     let data = await res.json();
     document.getElementById("member-name").innerHTML = data["member_name"] !== null ? data["member_name"] : "";
     document.getElementById("member-email").innerHTML = data["member_email"] !== null ? data["member_email"] : "";
@@ -413,7 +413,7 @@ const changePw = async() => {
         "new_pw": newPw,
         "confirm_pw": confirmPw
     }
-    let res = await fetch(memberSrc + "/api/member_pw", {
+    let res = await fetch("/api/member_pw", {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)

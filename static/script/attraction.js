@@ -38,7 +38,7 @@ function addAttributes(element, attributes) {
 }
 
 const loadAttraction = () => {
-    fetch(attractSrc + "/api/attraction/" + id)
+    fetch("/api/attraction/" + id)
         .then((response) => {
             return response.json();
         })
