@@ -24,14 +24,14 @@ async function createBooking() {
         "price": price
     };
     try {
-        let response = await fetch(bookingSrc + "/api/booking", {
+        let response = await fetch("/api/booking", {
             method: "POST",
             headers: bookingHeaders,
             body: JSON.stringify(requestBody)
         });
         let result = await response.json();
         if (result["ok"]) {
-            location.href = bookingSrc + "/booking";
+            location.href = "/booking";
         }
     } catch (error) {
         console.log(error);
@@ -42,11 +42,11 @@ async function createBooking() {
 // 取得預定行程資訊
 async function checkBooking() {
     if (!document.cookie.includes("wehelp_user")) {
-        location.href = bookingSrc;
+        location.href = "/";
         return
     }
     try {
-        let memberResponse = await fetch(memberSrc + "/api/user", {
+        let memberResponse = await fetch("/api/user", {
             method: "GET",
             headers: headers
         });
@@ -65,7 +65,7 @@ async function checkBooking() {
         return
     }
     try {
-        let response = await fetch(bookingSrc + "/api/booking", {
+        let response = await fetch("/api/booking", {
             method: "GET",
             headers: bookingHeaders
         });
@@ -112,7 +112,7 @@ async function checkBooking() {
 // 刪除行程
 async function deleteBooking() {
     try {
-        let response = await fetch(bookingSrc + "/api/booking", {
+        let response = await fetch("/api/booking", {
             method: "DELETE",
             headers: bookingHeaders
         });
@@ -132,7 +132,7 @@ async function deleteBooking() {
 
 async function confirmBooking() {
     try {
-        let response = await fetch(bookingSrc + "/api/booking", {
+        let response = await fetch("/api/booking", {
             method: "DELETE",
             headers: bookingHeaders
         });
@@ -154,7 +154,7 @@ async function send_order(prime) {
     let tappayRequestBody = {
         "prime": prime,
         "order": {
-            "price": document.getElementById("book-date").textContent === "新台幣 2000 元" ? 2000 : 2500,
+            "price": document.getElementById("book-charge").textContent === "新台幣 2000 元" ? 2000 : 2500,
             "trip": {
                 "attraction": {
                     "id": Number(document.getElementById("attractId").textContent),
@@ -173,7 +173,7 @@ async function send_order(prime) {
         }
     }
     try {
-        let response = await fetch(bookingSrc + "/api/orders", {
+        let response = await fetch("/api/orders", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -186,7 +186,7 @@ async function send_order(prime) {
         if (data['error']) {
             console.log("back not OK");
         } else {
-            location.href = bookingSrc + "/thankyou?number=" + order_no;
+            location.href = "/thankyou?number=" + order_no;
         }
     } catch (error) {
         console.log(error);

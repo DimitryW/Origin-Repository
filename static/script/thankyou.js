@@ -6,7 +6,7 @@ async function thankyou() {
     let order_no = urlParam.get("number")
 
     if (order_no) {
-        let res = await fetch(thankySrc + "/api/order/" + order_no);
+        let res = await fetch("/api/order/" + order_no);
         let data = await res.json();
         let number = data["data"]["number"];
         // let date = data["data"]["trip"]["date"];
@@ -25,7 +25,7 @@ async function thankyou() {
         // document.getElementById("book-email").innerHTML = email;
         // document.getElementById("book-phone").innerHTML = phone;
     } else {
-        location.href = thankySrc;
+        location.href = "/";
     }
 
 }

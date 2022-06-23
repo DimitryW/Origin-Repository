@@ -35,7 +35,7 @@ const showData = (listN, listM, listC, listI, ListD) => {
             img.style.display = "block";
             spinner.style.display = "none";
         }
-        aBox.href = indexSrc + "/attraction/" + ListD[count];
+        aBox.href = "/attraction/" + ListD[count];
         divName.appendChild(nameText);
         divMrt.appendChild(mrtText);
         divCat.appendChild(catText);
@@ -62,7 +62,7 @@ let callback = (entry) => {
         console.log("SCROLL CALLBACK OK")
 
         if (page != null) {
-            src = indexSrc + "/api/attractions?page=" + page + "&keyword=" + keyword;
+            src = "/api/attractions?page=" + page + "&keyword=" + keyword;
             let listName = [];
             let listMrt = [];
             let listCat = [];
