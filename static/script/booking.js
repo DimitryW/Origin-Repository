@@ -31,7 +31,7 @@ async function createBooking() {
         });
         let result = await response.json();
         if (result["ok"]) {
-            location.href = bookingSrc + "/booking";
+            location.href = "/booking";
         }
     } catch (error) {
         console.log(error);
@@ -42,7 +42,7 @@ async function createBooking() {
 // 取得預定行程資訊
 async function checkBooking() {
     if (!document.cookie.includes("wehelp_user")) {
-        location.href = bookingSrc;
+        location.href = "/";
         return
     }
     try {
