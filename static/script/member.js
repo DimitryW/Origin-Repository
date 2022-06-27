@@ -15,7 +15,9 @@ const signinWindow = () => {
     let closeIcon = document.createElement("img"); // 關閉視窗圖示
     let signinWrap = document.createElement("div"); // 登入欄位
     let inputEmail = document.createElement("input"); // 信箱輸入欄位
+    inputEmail.value = "test@mail.com";
     let inputPass = document.createElement("input"); // 密碼輸入欄位
+    inputPass.value = "test";
     let buttonWrap = document.createElement("div");
     let button1 = document.createElement("button"); // 登入帳戶按鈕
     let msg = document.createElement("div"); // 註冊訊息顯示區塊
