@@ -22,7 +22,10 @@ Test account and password : test@mail.com / test
   * infinite scroll.
   * Caresoul slideshow of each attraction.
   * Responsive web design.
+  
   ![image](https://github.com/DimitryW/Taipei-day-trip/blob/56d2308bf071f9c0e733d8fd664965b6d0263a0f/readme-demo/taipei-day-tripRWD~1.gif)
+
+  
 
 ## Backend Technique
 ### Language / Web Framework
